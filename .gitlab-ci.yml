@@ -1,0 +1,66 @@
+image: node:latest
+
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+stages:
+  - build
+  - test
+  - review
+  - production
+
+Build system:
+  stage: build
+  
+  script:
+    - echo "Installing dependencies..."
+    - npm install
+    - echo "Building..."
+    - npm run build
+
+  artifacts:
+    paths:
+      - build/
+    expire_in: 30 days
+
+Code Linting:
+  stage: test
+  
+  script:
+    - echo "Code Linting...."
+
+Document Linting:
+  stage: test
+  
+  script:
+    - echo "Document Linting...."
+
+Unit tests:
+  stage: test
+  
+  script:
+    - echo "Running Unit tests..."
+
+Other automatic tests:
+  stage: test
+  
+  script:
+    - echo "Running Other Tests..."
+
+Deploy to testenv:
+  stage: review
+  
+  script:
+    - echo "Deploying to review server"
+
+Deploy to production:
+  stage: production
+  
+  script:
+    - echo "Deploying to production server"
+    - npm install -g netlify-cli
+    - netlify deploy --dir=build --prod
+  
+  rules:
+    # We want to production as a manual step.
+    - when: manual
