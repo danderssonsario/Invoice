@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { newPass, resetState } from '../redux/authSlice.js'
+import Spinner from '../components/Spinner.jsx'
 
 function NewPass() {
+  toast.clearWaitingQueue()
+
   const [formData, setFormData] = useState({
     password: '',
     passwordConfirm: ''
@@ -18,6 +22,7 @@ function NewPass() {
     }))
   }
 
+  const params = useParams()
   const onSubmit = (e) => {
     e.preventDefault()
 
@@ -26,15 +31,23 @@ function NewPass() {
       passwordConfirm
     }
 
-    dispatch(newPass(userData))
+    dispatch(newPass(userData, params))
   }
 
-  const { user, isError, isSuccess, message } = useSelector((state) => state.auth)
+  const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   useEffect(() => {
+    if (user) {
+      navigate('/dashboard')
+    }
+
+    if (isError) {
+      toast.error(message)
+    }
+
     if (isSuccess) {
       navigate('/login')
     }
@@ -68,12 +81,21 @@ function NewPass() {
             type='password'
           />
         </div>
-        <button
-          type='submit'
-          className='font-semibold text-gray-200 w-full my-5 py-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:bg-indigo-600'
-        >
-          
-        </button>
+        {isLoading ? (
+          <button
+            type='button'
+            className='font-semibold text-gray-200 w-full my-5 py-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:bg-indigo-600'
+            disabled
+          >
+            <Spinner />
+            Laddar ...
+          </button>
+        ) : (
+          <button
+            type='submit'
+            className='font-semibold text-gray-200 w-full my-5 py-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:bg-indigo-600'
+          ></button>
+        )}
         <div className='flex justify-between'>
           <button className='font-semibold text-gray-300 rounded-md w-2/5 my-3 py-0.5 bg-indigo-700 shadow-lg hover:bg-indigo-800 order-first'>
             <Link to='/register'>Skapa ett konto</Link>

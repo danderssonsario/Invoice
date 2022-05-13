@@ -1,4 +1,5 @@
 const API_BASE_URL = 'https://autentiseringsserver.herokuapp.com' // heroku auth-app
+const RESET_URL = 'https://stellular-chaja-fc1e9d.netlify.app/reset'
 
 const register = async (userData) => {
   const res = await fetch(`${API_BASE_URL}/register`, {
@@ -9,9 +10,10 @@ const register = async (userData) => {
     body: JSON.stringify(userData)
   })
 
-  const data = await res.json()
-  console.log(data) // fixa rätt meddelande
-  return await res.json()
+  if (res.status === 409) throw new Error('Användare existerar redan.')
+  if (res.status === 400) throw new Error('Fält saknas.')
+
+  return 'hejhej'
 }
 
 const login = async (userData) => {
@@ -23,8 +25,11 @@ const login = async (userData) => {
     body: JSON.stringify(userData)
   })
 
+  if (res.status === 401) throw new Error('Felaktiga uppgifter. Försök igen.')
+  
   const data = await res.json()
-  if (res.ok) localStorage.setItem('user', JSON.stringify(data))
+
+  localStorage.setItem('user', JSON.stringify(data))
 
   return data
 }
@@ -35,20 +40,24 @@ const reset = async (userData) => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(userData)
+    body: JSON.stringify({ email: userData.email, resetUrl: RESET_URL })
   })
 
-  return await res.json()
+  if (res.status === 404) throw new Error('Finns inget konto kopplat till denna e-postadress.')
+
+  return await userData.email
 }
 
 const newPass = async (userData, params) => {
-  const res = await fetch(`${API_BASE_URL}/newpass/${params}`, {
+  const res = await fetch(`${API_BASE_URL}/newpass/${params.token}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(userData)
+    body: JSON.stringify(userData),
   })
+
+  if (res.status === 400) throw new Error('Återställningslänk har gått ut eller förbrukats.')
 
   return await res.json()
 }
@@ -56,7 +65,8 @@ const newPass = async (userData, params) => {
 const authService = {
   register,
   login,
-  reset
+  reset,
+  newPass
 }
 
 export default authService

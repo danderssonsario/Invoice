@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { reset, resetState } from '../redux/authSlice.js'
+import Spinner from '../components/Spinner.jsx'
 
 function Reset() {
+  toast.clearWaitingQueue()
+
   const [formData, setFormData] = useState({
     email: ''
   })
@@ -20,7 +24,7 @@ function Reset() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { user, isError, isSuccess, message } = useSelector((state) => state.auth)
+  const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -33,8 +37,17 @@ function Reset() {
   }
 
   useEffect(() => {
-    if (isSuccess || user) {
-      navigate('/')
+    if (user) {
+      navigate('/dashboard')
+    }
+
+    if (isError) {
+      toast.error(message)
+    }
+    
+    if (isSuccess) {
+      toast.success(message)
+      navigate('/reset')
     }
 
     dispatch(resetState())
@@ -55,13 +68,23 @@ function Reset() {
             type='text'
           />
         </div>
-
-        <button
-          type='submit'
-          className='font-semibold text-gray-200 w-full my-5 py-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:bg-indigo-600'
-        >
-          Begär återställning
-        </button>
+        {isLoading ? (
+          <button
+            type='button'
+            className='font-semibold text-gray-200 w-full my-5 py-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:bg-indigo-600'
+            disabled
+          >
+            <Spinner />
+            Laddar ...
+          </button>
+        ) : (
+          <button
+            type='submit'
+            className='font-semibold text-gray-200 w-full my-5 py-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:bg-indigo-600'
+          >
+            Begär återställningslänk
+          </button>
+        )}
         <div className='flex justify-between'>
           <button className='font-semibold text-gray-300 rounded-md w-2/5 my-3 py-0.5 bg-indigo-700 shadow-lg hover:bg-indigo-800 order-first'>
             <Link to='/register'>Skapa ett konto</Link>

@@ -13,10 +13,9 @@ const initialState = {
 
 export const register = createAsyncThunk('auth/register', async (user, thunkAPI) => {
   try {
-    return await authService.register(user)
+    return await authService.register(user) //await authService.register(user)
   } catch (err) {
-    //fixa rätt meddelande
-    return thunkAPI.rejectWithValue('something went wrong')
+    return thunkAPI.rejectWithValue(err.message)
   }
 })
 
@@ -24,7 +23,7 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
   try {
     return await authService.login(user)
   } catch (err) {
-    return thunkAPI.rejectWithValue(err)
+    return thunkAPI.rejectWithValue(err.message)
   }
 })
 
@@ -32,15 +31,15 @@ export const reset = createAsyncThunk('auth/reset', async (user, thunkAPI) => {
   try {
     return await authService.reset(user)
   } catch (err) {
-    return thunkAPI.rejectWithValue(err)
+    return thunkAPI.rejectWithValue(err.message)
   }
 })
 
-export const newPass = createAsyncThunk('auth/newpass', async (user, thunkAPI) => {
+export const newPass = createAsyncThunk('auth/newpass', async (user, params, thunkAPI) => {
   try {
-    return await authService.reset(user)
+    return await authService.newPass(user, params)
   } catch (err) {
-    return thunkAPI.rejectWithValue(err)
+    return thunkAPI.rejectWithValue(err.message)
   }
 })
 
@@ -64,6 +63,7 @@ export const authSlice = createSlice({
         state.isLoading = false
         state.isSuccess = true
         state.user = action.payload
+        state.message = 'Nytt konto registrerat.'
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false
@@ -77,6 +77,7 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
+        state.message = `Välkommen!` 
         state.user = action.payload
       })
       .addCase(login.rejected, (state, action) => {
@@ -91,9 +92,24 @@ export const authSlice = createSlice({
       .addCase(reset.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.user = action.payload
+        state.message = `Återställningslänk skickat till ${action.payload}`
       })
       .addCase(reset.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.user = null
+      })
+      .addCase(newPass.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(newPass.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.message = 'Nytt lösenord satt.'
+        state.user = null
+      })
+      .addCase(newPass.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
