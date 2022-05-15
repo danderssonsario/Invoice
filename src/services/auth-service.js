@@ -13,7 +13,7 @@ const register = async (userData) => {
   if (res.status === 409) throw new Error('Användare existerar redan.')
   if (res.status === 400) throw new Error('Fält saknas.')
 
-  return 'hejhej'
+  return 'hej'
 }
 
 const login = async (userData) => {

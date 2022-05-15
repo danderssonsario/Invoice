@@ -23,6 +23,7 @@ function NewPass() {
   }
 
   const params = useParams()
+  
   const onSubmit = (e) => {
     e.preventDefault()
 
