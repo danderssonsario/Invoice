@@ -1,26 +1,25 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 
-function Articles({ list, total }) {
+function ItemForm() {
 
   const [isEditing, setIsEditing] = useState(false)
 
   const [itemData, setItemData] = useState({
-    desc: '',
+    desc:'',
     itemID: '',
     quant: '',
     pricePer: ''
-})
+  })
 
   const { desc, itemID, quant, pricePer } = itemData
 
   const onSubmit = (e) => {
     e.preventDefault()
 
-    setItemData((prevState) => ({
-      ...prevState,
-      items: [...prevState, { desc: '', itemID: '', quant: '', pricePer: '' }]
-    }))
+    setItemData(() => (
+      setItemData([...itemData, {desc:desc, itemID:itemID, quant:quant, pricePer:pricePer}])
+    ))
   }
 
   const onChange = (e) => {
@@ -32,54 +31,6 @@ function Articles({ list, total }) {
 
   return (
     <>
-      <div className='flex items-start w-full mb-0 bg-gray-100'>
-        <div className='font-bold p-2 mr-48'>Beskrivning</div>
-
-        <div className='font-bold p-2 ml-6 mr-36'>Art.nr</div>
-        <div className='font-bold p-2 ml-4 mr-8'>Antal</div>
-        <div className='font-bold p-2 mr-8'>á pris</div>
-        <div className='font-bold p-2'>Belopp</div>
-
-        {/* {itemData.map((item, index) => (
-          <div key={index} className='flex items-start w-full'>
-            <div>
-              <div className=''>
-                <div>{item.desc}</div>
-              </div>
-            </div>
-            <div>
-              <div className='flex flex-col'>
-                <div>{item.itemID}</div>
-              </div>
-            </div>
-            <div>
-              <div className='flex flex-col'>
-                <div>{item.quant}</div>
-              </div>
-            </div>
-            <div>
-              <div className='flex flex-col'>
-                <div className=''>{item.pricePer}</div>
-              </div>
-            </div>
-
-            <p className='text-lg mt-2 p-1'>{(quant ?? 0) * (pricePer ?? 0)} kr</p>
-          </div>
-        ))} */}
-
-        {/* {list.map(({ id, description, quantity, price, amount }) => (
-          <React.Fragment key={id}>
-            <tbody>
-              <tr className='h-10'>
-                <td>{description}</td>
-                <td>{quantity}</td>
-                <td>{price}</td>
-                <td>{amount}</td>
-              </tr>
-            </tbody>
-          </React.Fragment>
-        ))} */}
-      </div>
       <form className='' onSubmit={onSubmit}>
         <div className='flex items-start w-full'>
           <div>
@@ -139,7 +90,7 @@ function Articles({ list, total }) {
         </div>
         <button
           type='submit'
-          className='mb-5 bg-indigo-500 text-white font-bold py-2 px-8 rounded shadow border-2 border-indigo-500 hover:bg-transparent hover:text-indigo-500 transition-all duration-300'
+          className='mb-5 bg-indigo-500 text-white font-bold py-2 px-5 rounded shadow border-2 border-indigo-500 hover:bg-transparent hover:text-indigo-500 transition-all duration-300'
         >
           {isEditing ? 'Ändra' : 'Lägg till'}
         </button>
@@ -188,4 +139,4 @@ function Articles({ list, total }) {
   )
 }
 
-export default Articles
+export default ItemForm
