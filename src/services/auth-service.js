@@ -1,5 +1,6 @@
 const API_BASE_URL = 'https://autentiseringsserver.herokuapp.com' // heroku auth-app
-const RESET_URL = 'https://stellular-chaja-fc1e9d.netlify.app/reset'
+// const RESET_URL = 'https://stellular-chaja-fc1e9d.netlify.app/reset'
+const localurl = 'http://localhost:3000/reset'
 
 const register = async (userData) => {
   const res = await fetch(`${API_BASE_URL}/register`, {
@@ -40,7 +41,7 @@ const reset = async (userData) => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email: userData.email, resetUrl: RESET_URL })
+    body: JSON.stringify({ email: userData.email, resetUrl: localurl })
   })
 
   if (res.status === 404) throw new Error('Finns inget konto kopplat till denna e-postadress.')
