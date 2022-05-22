@@ -9,7 +9,7 @@ import {
   AiOutlineFileDone,
   AiOutlineFileUnknown,
   AiOutlineFileExclamation,
-  AiOutlineBank
+  AiOutlineBank,
 } from 'react-icons/ai'
 
 function Dashboard() {

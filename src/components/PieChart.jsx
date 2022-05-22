@@ -3,7 +3,7 @@ import { Chart as ChartJS } from 'chart.js/auto'
 
 function PieChart({ chartData, chartOptions }) {
   return (
-    <div className='ml-5 p-2 w-1/4 bg-gray-700 rounded-lg'>
+    <div className='ml-5 p-5 max-h-1/3 max-w-2/4 bg-gray-700 rounded-lg'>
       <Pie data={chartData} options={chartOptions} />
     </div>
   )

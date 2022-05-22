@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 import Dates from '../components/createPage/Dates'
 import Footer from '../components/createPage/Footer'
@@ -14,40 +14,61 @@ import Sidebar from '../components/Sidebar'
 let itemIndex = 0
 function Create() {
   const [invoiceData, setInvoiceData] = useState({
-    items: [{ desc: '', itemID: '', quant: 0, pricePer: 0, priceTotal: 0 }],
+    items: [{ desc: '', itemID: '', quant: '', pricePer: '', priceTotal: '' }],
     dueDate: '',
     date: '',
     orderID: '',
-    tax: { percent: 0, sum: 0 },
-    total: 0,
-    shipping: 0,
+    tax: '',
+    total: '',
+    shipping: '',
     subTotal: 0,
     status: false,
     issuer: { businessName: '', email: '', phone: '', adress: '', orgNr: '' },
     customer: { name: '', email: '', phone: '', adress: '' },
     payment: { pg: '', bg: '', iban: '', bic: '' }
   })
-  
-  const [items, setItems] = useState(
+
+  const [subTotall, setSubTotall] = useState(0)
+  let {
+    items,
+    dueDate,
+    date,
+    orderID,
+    tax,
+    total,
+    shipping,
+    subTotal,
+    status,
+    issuer,
+    customer,
+    payment
+  } = invoiceData
+
+  /*   const [items, setItems] = useState(
     [{index:'', desc: '', itemID: '', quant: '', pricePer: '', priceTotal: '' }]
   )
 
   const [item, setItem] = useState(
     { index: '', desc: '', itemID: '', quant: '', pricePer: '', priceTotal: '' }
   )
+ */
 
-  
+  //const { index, desc, itemID, quant, pricePer, priceTotal} = item
 
-  const { index, desc, itemID, quant, pricePer, priceTotal} = item
+  //const deleteRow = (index) => setItems(items.filter((row) => row.index !== index))
 
-  const deleteRow = (index) => setItems(items.filter((row) => row.index !== index))
-  
   const [isEditing, setIsEditing] = useState(false)
 
-  const onSubmit = (e) => {
+  const addItemField = (e) => {
     e.preventDefault()
-    itemIndex++
-    setItems([
+    setInvoiceData((prevState) => ({
+      ...prevState,
+      items: [
+        ...prevState.items,
+        { itemName: '', unitPrice: '', quantity: '', discount: '', amount: '' }
+      ]
+    }))
+    /*  setItems([
       ...items,
       {
         index: itemIndex,
@@ -57,17 +78,38 @@ function Create() {
         pricePer: pricePer,
         priceTotal: quant * pricePer + ' kr'
       }
-    ]) 
+    ])  */
   }
-  const onChange = (e) => {
-    console.log(e.target.name);
-    setInvoiceData((prevState) => ({
+  const handleItemChange = (index, e) => {
+    [...invoiceData.items][index][e.target.name] = e.target.value
+    setInvoiceData({ ...invoiceData, items: [...invoiceData.items] })
+    console.log(invoiceData)
+
+    /* setItem((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value
-    }))
-    console.log(invoiceData);
+    })) */
   }
-  
+
+  const handleIssuerChange = (e) => {
+    setInvoiceData((prevState) => ({
+      ...prevState,
+      issuer: { ...prevState.issuer, [e.target.name]: e.target.value }
+    }))
+  }
+
+  useEffect(() => {
+    let arr = document.getElementsByName('quant')
+    let arr2 = document.getElementsByName('pricePer')
+    let sub = 0
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i].value && arr[i].value) {
+        sub += parseInt(arr[i].value * arr2[i].value)
+      }
+    }
+    
+    setSubTotall(sub)
+  },[invoiceData])
 
   return (
     <div className='flex h-full w-screen bg-gray-800'>
@@ -75,13 +117,38 @@ function Create() {
 
       <div className='flex mx-auto mt-10 bg-white p-5 rounded'>
         <div className='p-5'>
-          <button
-            className='text-indigo-700 font-bold text-xl mt-1.5'
-            onClick={() => deleteRow(item.index)}
-          >
-            Spara
-          </button>
-          <Header />
+          <header className='flex flex-col items-start justify-center mb-5 xl:flex-row xl:justify-between'>
+            <div>
+              <h1 className='font-bold uppercase tracking-wide text-4xl mb-3'>
+                <input
+                  className='rounded-lg bg-gray-200 p-1 focus:bg-gray-100 focus:outline-1'
+                  type='text'
+                  name='businessName'
+                  id='businessName'
+                  placeholder='Verksamhetsnamn'
+                  autoComplete='off'
+                  value={issuer.businessName}
+                  onChange={handleIssuerChange}
+                />
+              </h1>
+              <h3>
+                <input
+                  className='rounded-lg bg-gray-200 p-1 focus:bg-gray-100 focus:outline-1'
+                  type='text'
+                  name='orgNr'
+                  id='orgNr'
+                  placeholder='Organisationsnummer'
+                  autoComplete='off'
+                  value={issuer.orgNr}
+                  onChange={handleIssuerChange}
+                />
+              </h3>
+            </div>
+            <div className='flex flex-col'>
+              <h2 className='font-bold text-5xl uppercase mb-1'>Faktura</h2>
+              <h3>{} fakturanummer</h3>
+            </div>
+          </header>
 
           <MainDetails />
 
@@ -94,7 +161,7 @@ function Create() {
             <div className='font-bold p-2 mr-8'>á pris</div>
             <div className='font-bold p-2'>Belopp</div>
           </div>
-          {items.map((item, index) =>
+          {/* {items.map((item, index) =>
             item.index > 0 ? (
               <div key={index}>
                 <div className='flex items-start w-full'>
@@ -128,86 +195,83 @@ function Create() {
             ) : (
               ''
             )
-          )}
-          <form className='' onSubmit={onSubmit}>
-            <div className='flex items-start w-full'>
-              <div>
-                <div className=''>
-                  <input
-                    className='mr-2 w-80 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
-                    type='text'
-                    name='desc'
-                    id='desc'
-                    value={invoiceData.items[itemIndex].desc}
-                    onChange={onChange}
-                  />
+          )} */}
+          {invoiceData.items.map((item, index) => (
+            <div key={index} className=''>
+              <div className='flex items-start w-full'>
+                <div>
+                  <div className=''>
+                    <input
+                      className='mr-2 w-80 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
+                      type='text'
+                      name='desc'
+                      id='desc'
+                      value={item.desc}
+                      onChange={(e) => handleItemChange(index, e)}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div className='flex flex-col'>
-                  <input
-                    className='mr-2 w-52 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
-                    type='text'
-                    name='itemID'
-                    id='itemID'
-                    placeholder=''
-                    value={itemID}
-                    onChange={onChange}
-                  />
+                <div>
+                  <div className='flex flex-col'>
+                    <input
+                      className='mr-2 w-52 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
+                      type='text'
+                      name='itemID'
+                      id='itemID'
+                      placeholder=''
+                      value={item.itemID}
+                      onChange={(e) => handleItemChange(index, e)}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div className='flex flex-col'>
-                  <input
-                    className='mr-2 w-20 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
-                    min='0'
-                    type='number'
-                    name='quant'
-                    id='quant'
-                    placeholder='1'
-                    value={quant}
-                    onChange={onChange}
-                  />
+                <div>
+                  <div className='flex flex-col'>
+                    <input
+                      className='mr-2 w-20 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
+                      min='0'
+                      type='number'
+                      name='quant'
+                      id='quant'
+                      value={item.quant}
+                      onChange={(e) => handleItemChange(index, e)}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div className='flex flex-col'>
-                  <input
-                    className='mr-2 w-20 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
-                    type='text'
-                    name='pricePer'
-                    id='pricePer'
-                    placeholder='Pris'
-                    value={pricePer}
-                    onChange={onChange}
-                  />
+                <div>
+                  <div className='flex flex-col'>
+                    <input
+                      className='mr-2 w-20 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
+                      type='text'
+                      name='pricePer'
+                      id='pricePer'
+                      value={item.pricePer}
+                      onChange={(e) => handleItemChange(index, e)}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <p className='text-lg mt-2 p-1'>{(quant ?? 0) * (pricePer ?? 0)} kr</p>
+                <p className='text-lg mt-2 p-1'>
+                  {(item.priceTotal = (item.quant ?? 0) * (item.pricePer ?? 0))} kr
+                </p>
+              </div>
             </div>
-            <button
-              type='submit'
-              className='mb-5 bg-indigo-500 text-white font-bold py-1 px-2 rounded shadow border-2 border-indigo-500 hover:bg-transparent hover:text-indigo-500 transition-all duration-300'
-            >
-              {isEditing ? 'Ändra' : 'Lägg till'}
-            </button>
-          </form>
+          ))}
+          <button
+            onClick={addItemField}
+            className='mb-5 bg-indigo-500 text-white font-bold py-1 px-2 rounded shadow border-2 border-indigo-500 hover:bg-transparent hover:text-indigo-500 transition-all duration-300'
+          >
+            Lägg till
+          </button>
 
           <div className='flex items-end justify-end'>
-            <ul className=''>
-              <li className='px-2 bg-gray-100 rounded-t-md'>
-                <span className='font-bold'>Summa:</span>{' '}
-                <input
-                  className='rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
-                  type='text'
-                  name='sum'
-                  id='sum'
-                  autoComplete='off'
-                />
+            <ul>
+              <li className='rounded-t-lg px-2 bg-gray-100'>
+                <span className='font-bold'>
+                  Summa: {subTotall} kr
+                </span>
               </li>
               <li className='px-2 bg-gray-100'>
-                <span className='font-bold'>Frakt:</span>{' '}
+                <span className='font-bold'>Frakt: {shipping}</span>
                 <input
                   className='rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
                   type='text'
@@ -217,7 +281,7 @@ function Create() {
                 />
               </li>
               <li className='px-2 bg-gray-100 rounded-b-md'>
-                <span className='font-bold'>Moms:</span>{' '}
+                <span className='font-bold'>Moms: {tax}</span>
                 <input
                   min='0'
                   max='100'
