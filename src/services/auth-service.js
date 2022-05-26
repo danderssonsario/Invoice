@@ -63,11 +63,16 @@ const newPass = async (userData, params) => {
   return await res.json()
 }
 
+const logout = () => {
+  localStorage.removeItem('user')
+}
+
 const authService = {
   register,
   login,
   reset,
-  newPass
+  newPass,
+  logout
 }
 
 export default authService

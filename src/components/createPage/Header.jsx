@@ -1,17 +1,11 @@
-import { useState } from 'react'
 
-function Header() {
-  const [formData, setFormData] = useState({
-    header: '',
-    orgNr: ''
-  })
+function Header({ invoiceData, setInvoiceData }) {
+  const { businessName, orgNr } = invoiceData.issuer
 
-  const { header, orgNr } = formData
-
-  const onChange = (e) => {
-    setFormData((prevState) => ({
+  const handleIssuerChange = (e) => {
+    setInvoiceData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value
+      issuer: { ...prevState.issuer, [e.target.name]: e.target.value }
     }))
   }
 
@@ -23,12 +17,12 @@ function Header() {
             <input
               className='rounded-lg bg-gray-200 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
-              name='header'
-              id='header'
+              name='businessName'
+              id='businessName'
               placeholder='Verksamhetsnamn'
               autoComplete='off'
-              value={header}
-              onChange={onChange}
+              value={businessName}
+              onChange={handleIssuerChange}
             />
           </h1>
           <h3>
@@ -40,7 +34,7 @@ function Header() {
               placeholder='Organisationsnummer'
               autoComplete='off'
               value={orgNr}
-              onChange={onChange}
+              onChange={handleIssuerChange}
             />
           </h3>
         </div>

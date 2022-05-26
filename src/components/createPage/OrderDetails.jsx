@@ -1,26 +1,30 @@
-import { useState } from "react"
+import { useEffect } from 'react'
 
-function Dates() {
+function OrderDetails({ invoiceData, setInvoiceData }) {
 
-    const [formData, setFormData] = useState({
-    orderID: '',
-    date: '',
-    dueDate: '',
-    ocr: ''
-  })
+  const { orderID, date, dueDate, reference } = invoiceData.order
+  const { items } = invoiceData
 
-  const { orderID, date, dueDate, ocr } = formData
+  const handleOrderChange = (e) => {
+    setInvoiceData((prevState) => ({
+      ...prevState,
+      order: { ...prevState.order, [e.target.name]: e.target.value }
+    }))
+  }
 
-    const onChange = (e) => {
-      setFormData((prevState) => ({
-        ...prevState,
-        [e.target.name]: e.target.value
-      }))
-    }
-  
+  useEffect(() => {
+    if(items.length) {
+      const sub = items.map((item) => item.priceTotal).reduce((prev, curr) => prev + curr)
+    setInvoiceData((prevState) => ({
+      ...prevState,
+      order: { ...prevState.order, subTotal: sub }
+    }))
+  }
+  }, [items])
+
   return (
     <>
-      <article className='mt-10 mb-14 flex items-end justify-start'>
+      <div className='mt-10 mb-14 flex items-end justify-start'>
         <ul>
           <li className='px-2 bg-gray-100 rounded-t-md'>
             <span className='font-bold'>Order-id:</span>{' '}
@@ -29,9 +33,8 @@ function Dates() {
               type='text'
               name='orderID'
               id='orderID'
-              autoComplete='off'
               value={orderID}
-              onChange={onChange}
+              onChange={handleOrderChange}
             />
           </li>
           <li className='px-2 bg-gray-100'>
@@ -43,7 +46,7 @@ function Dates() {
               id='date'
               autoComplete='off'
               value={date}
-              onChange={onChange}
+              onChange={handleOrderChange}
             />
           </li>
           <li className='px-2 bg-gray-100 rounded-b-md'>
@@ -55,7 +58,7 @@ function Dates() {
               id='dueDate'
               autoComplete='off'
               value={dueDate}
-              onChange={onChange}
+              onChange={handleOrderChange}
             />
           </li>
           <li className='px-2 bg-gray-100 rounded-b-md'>
@@ -63,17 +66,16 @@ function Dates() {
             <input
               className='rounded-lg bg-gray-200 mt-2 mb-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
-              name='ocr'
-              id='ocr'
-              autoComplete='off'
-              value={ocr}
-              onChange={onChange}
+              name='reference'
+              id='reference'
+              value={reference}
+              onChange={handleOrderChange}
             />
           </li>
         </ul>
-      </article>
+      </div>
     </>
   )
-  }
+}
 
-export default Dates
+export default OrderDetails

@@ -84,11 +84,11 @@ function Sidebar() {
               <span className={`${!isOpen && 'scale-0'} origin-left duration-200`}>Fakturor</span>
             </li>
           </Link>
-          <li
+          <li onClick={onLogout}
             className='hover:text-gray-600 flex p-1 cursor-pointer text-gray-200 font-medium text-xl items-center gap-x-4 
               mt-20'
           >
-            <IoLogOut
+            <IoLogOut onClick={onLogout}
               className={`${
                 !isOpen && 'hover:text-gray-600 duration-200'
               } ml-0.5 w-9 h-9 text-gray-200 shrink-0`}

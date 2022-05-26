@@ -1,43 +1,27 @@
-import { useState } from 'react'
+export default function Footer({ invoiceData, setInvoiceData }) {
 
-export default function Footer() {
-  const [formData, setFormData] = useState({
-    email: '',
-    phone: '',
-    adress: '',
-    website: '',
-    clientName: '',
-    clientEmail: '',
-    clientAdress: '',
-    clientPhone: '',
-    bg: '',
-    pg: '',
-    iban: '',
-    bic: ''
-  })
+  const { issuer, customer, payment } = invoiceData
 
-  const {
-    email,
-    phone,
-    adress,
-    website,
-    clientName,
-    clientEmail,
-    clientAdress,
-    clientPhone,
-    bg,
-    pg,
-    iban,
-    bic
-  } = formData
-
-  const onChange = (e) => {
-    setFormData((prevState) => ({
+  const handleIssuerChange = (e) => {
+    setInvoiceData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value
+      issuer: { ...prevState.issuer, [e.target.name]: e.target.value }
     }))
   }
 
+  const handleCustomerChange = (e) => {
+    setInvoiceData((prevState) => ({
+      ...prevState,
+      customer: { ...prevState.customer, [e.target.name]: e.target.value }
+    }))
+  }
+
+  const handlePaymentChange = (e) => {
+    setInvoiceData((prevState) => ({
+      ...prevState,
+      payment: { ...prevState.payment, [e.target.name]: e.target.value }
+    }))
+  }
   return (
     <>
       <footer className='flex footer border-t-2 border-gray-300 pt-5 justify-between'>
@@ -51,8 +35,8 @@ export default function Footer() {
               autoComplete='off'
               id='email'
               name='email'
-              value={email}
-              onChange={onChange}
+              value={issuer.email}
+              onChange={handleIssuerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
             />
@@ -63,8 +47,8 @@ export default function Footer() {
               autoComplete='off'
               id='phone'
               name='phone'
-              value={phone}
-              onChange={onChange}
+              value={issuer.phone}
+              onChange={handleIssuerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
             />
@@ -75,8 +59,8 @@ export default function Footer() {
               autoComplete='off'
               id='adress'
               name='adress'
-              value={adress}
-              onChange={onChange}
+              value={issuer.adress}
+              onChange={handleIssuerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
             />
@@ -88,8 +72,8 @@ export default function Footer() {
               autoComplete='off'
               id='website'
               name='website'
-              value={website}
-              onChange={onChange}
+              value={issuer.website}
+              onChange={handleIssuerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
             />
@@ -101,10 +85,10 @@ export default function Footer() {
             <input
               placeholder='Namn'
               autoComplete='off'
-              id='clientName'
-              name='clientName'
-              value={clientName}
-              onChange={onChange}
+              id='customerName'
+              name='customerName'
+              value={customer.customerName}
+              onChange={handleCustomerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
             />
@@ -113,10 +97,10 @@ export default function Footer() {
             <input
               placeholder='E-postadress'
               autoComplete='off'
-              id='clientEmail'
-              name='clientEmail'
-              value={clientEmail}
-              onChange={onChange}
+              id='customerEmail'
+              name='customerEmail'
+              value={customer.customerEmail}
+              onChange={handleCustomerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
             />
@@ -125,10 +109,10 @@ export default function Footer() {
             <input
               placeholder='Telefonnummer'
               autoComplete='off'
-              id='clientPhone'
-              name='clientPhone'
-              value={clientPhone}
-              onChange={onChange}
+              id='customer'
+              name='customer'
+              value={customer.customerPhone}
+              onChange={handleCustomerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
             />
@@ -137,10 +121,10 @@ export default function Footer() {
             <input
               placeholder='Adress'
               autoComplete='off'
-              id='clientAdress'
-              name='clientAdress'
-              value={clientAdress}
-              onChange={onChange}
+              id='customerAdress'
+              name='customerAdress'
+              value={customer.customerAdress}
+              onChange={handleCustomerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
             />
@@ -156,8 +140,8 @@ export default function Footer() {
               autoComplete='off'
               id='bg'
               name='bg'
-              value={bg}
-              onChange={onChange}
+              value={payment.bg}
+              onChange={handlePaymentChange}
               className='rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
             />
@@ -168,8 +152,8 @@ export default function Footer() {
               autoComplete='off'
               id='pg'
               name='pg'
-              value={pg}
-              onChange={onChange}
+              value={payment.pg}
+              onChange={handlePaymentChange}
               className='rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
             />
@@ -177,30 +161,26 @@ export default function Footer() {
           <li>
             <span className='font-bold'>IBAN:</span>{' '}
             <input
-              placeholder='Valfritt'
               autoComplete='off'
               id='iban'
               name='iban'
-              value={iban}
-              onChange={onChange}
+              value={payment.iban}
+              onChange={handlePaymentChange}
               className='rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
             />
           </li>
           <li>
             <span className='font-bold'>SWIFT/BIC:</span>{' '}
-            
-              <input
-                placeholder='Valfritt'
-                autoComplete='off'
-                id='bic'
-                name='bic'
-                value={bic}
-                onChange={onChange}
-                className='rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
-                type='text'
-              />
-          
+            <input
+              autoComplete='off'
+              id='bic'
+              name='bic'
+              value={payment.bic}
+              onChange={handlePaymentChange}
+              className='rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
+              type='text'
+            />
           </li>
         </ul>
       </footer>

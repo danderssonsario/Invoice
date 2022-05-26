@@ -116,11 +116,11 @@ function Register() {
           </button>
         )}
         <div className='flex justify-between'>
-          <button className='font-semibold text-gray-300 rounded-md w-3/5 my-3 py-0.5 bg-indigo-700 shadow-lg hover:bg-indigo-800 order-first'>
+          <div className='font-semibold text-gray-300 rounded-md w-4/5 my-3 text-center mx-auto py-0.5 bg-indigo-700 shadow-lg hover:bg-indigo-800 order-first'>
             <Link to='/login'>Har du ett konto? Logga in</Link>
-          </button>
+          </div>
         </div>
-        <p></p>
+        
       </form>
     </div>
   )

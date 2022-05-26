@@ -86,14 +86,13 @@ function Reset() {
           </button>
         )}
         <div className='flex justify-between'>
-          <button className='font-semibold text-gray-300 rounded-md w-2/5 my-3 py-0.5 bg-indigo-700 shadow-lg hover:bg-indigo-800 order-first'>
+          <div className='font-semibold text-center text-gray-300 rounded-md w-2/5 my-3 py-0.5 bg-indigo-700 shadow-lg hover:bg-indigo-800 order-first'>
             <Link to='/register'>Skapa ett konto</Link>
-          </button>
-          <button className='font-semibold text-gray-300 rounded-md w-2/5 my-3 py-0.5 bg-indigo-700 shadow-lg hover:bg-indigo-800 order-last'>
+          </div>
+          <div className='font-semibold text-center text-gray-300 rounded-md w-2/5 my-3 py-0.5 bg-indigo-700 shadow-lg hover:bg-indigo-800 order-last'>
             <Link to='/login'>Logga in</Link>
-          </button>
+          </div>
         </div>
-        <p></p>
       </form>
     </div>
   )
