@@ -88,7 +88,11 @@ function NewPass() {
             className='font-semibold text-gray-200 w-full my-5 py-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:bg-indigo-600'
             disabled
           >
-            <Spinner />
+            <Spinner
+              className={
+                'inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300'
+              }
+            />
             Laddar ...
           </button>
         ) : (

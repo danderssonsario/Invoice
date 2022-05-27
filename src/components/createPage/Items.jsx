@@ -21,7 +21,13 @@ function Items({ invoiceData, setInvoiceData }) {
 
   const handleItemChange = (index, e) => {
     ;[...invoiceData.items][index][e.target.name] = e.target.value
-    setInvoiceData({ ...invoiceData, items: [...invoiceData.items] })
+
+    setInvoiceData({
+      ...invoiceData,
+      items: items.map((item) => {
+        return {...item, priceTotal: (item.pricePer || 0) * (item.quant || 0)}
+      })
+    })
   }
 
   return (
@@ -88,9 +94,7 @@ function Items({ invoiceData, setInvoiceData }) {
               </div>
             </div>
 
-            <p className='text-lg mt-2 p-1'>
-              {(item.priceTotal = (item.quant ?? 0) * (item.pricePer ?? 0))} kr
-            </p>
+            <p className='text-lg mt-2 p-1'>{item.priceTotal} kr</p>
             <AiOutlineDelete
               onClick={() => deleteItemField(index)}
               className='absolute bottom-2 right-0 w-6 h-6 text-red-600 hover:text-red-800 hover:cursor-pointer duration-200'

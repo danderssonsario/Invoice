@@ -1,11 +1,34 @@
+import { useEffect } from "react"
+
 function Summary({ invoiceData, setInvoiceData }) {
   const { order } = invoiceData
+  const { items } = invoiceData
   const handleOrderChange = (e) => {
     setInvoiceData((prevState) => ({
       ...prevState,
-      order: { ...prevState.order, [e.target.name]: e.target.value }
+      order: { ...prevState.order, [e.target.name]: e.target.value 
+                  }
     }))
   }
+  useEffect(() => {
+    if (items.length) {
+      const sub = items.map((item) => item.priceTotal).reduce((prev, curr) => prev + curr)
+      setInvoiceData((prevState) => ({
+        ...prevState,
+        order: { ...prevState.order, subTotal: sub }
+      }))
+    }
+  }, [items, setInvoiceData])
+
+  useEffect(() => {
+    setInvoiceData((prevState) => ({
+      ...prevState,
+      order: { ...prevState.order, total: (parseInt(order.subTotal || 0) +
+                parseInt(order.subTotal || 0) * (parseInt(order.tax || 0) / 100) +
+                parseInt(order.shipping || 0)) }
+    }))
+  }, [order.shipping, order.subTotal, order.tax, setInvoiceData])
+
   return (
     <>
       <div className='flex items-end justify-end'>
@@ -42,12 +65,9 @@ function Summary({ invoiceData, setInvoiceData }) {
             <span className='font-bold'> %</span>
           </li>
           <h2 className='mt-4 border-gray-900 border-t-4 text-gray-800 text-xl font-bold'>
-            Att betala:{' '}
+            Att betala:
             {
-              (order.total =
-                parseInt(order.subTotal || 0) +
-                parseInt(order.subTotal || 0) * (parseInt(order.tax || 0) / 100) +
-                parseInt(order.shipping || 0))
+              order.total
             }
             kr
           </h2>

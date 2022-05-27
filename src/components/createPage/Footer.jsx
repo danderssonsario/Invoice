@@ -80,14 +80,14 @@ export default function Footer({ invoiceData, setInvoiceData }) {
           </li>
         </ul>
         <ul className='flex flex-col items-start'>
-          <h3 className='mx-1 font-semibold font-sans text-xl underline decoration-2'>Mottagare</h3>
+          <h3 className='mx-1 font-semibold font-sans text-xl underline decoration-2'>Kund</h3>
           <li>
             <input
               placeholder='Namn'
               autoComplete='off'
-              id='customerName'
-              name='customerName'
-              value={customer.customerName}
+              id='name'
+              name='name'
+              value={customer.name}
               onChange={handleCustomerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
@@ -97,9 +97,9 @@ export default function Footer({ invoiceData, setInvoiceData }) {
             <input
               placeholder='E-postadress'
               autoComplete='off'
-              id='customerEmail'
-              name='customerEmail'
-              value={customer.customerEmail}
+              id='email'
+              name='email'
+              value={customer.email}
               onChange={handleCustomerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
@@ -109,9 +109,9 @@ export default function Footer({ invoiceData, setInvoiceData }) {
             <input
               placeholder='Telefonnummer'
               autoComplete='off'
-              id='customer'
-              name='customer'
-              value={customer.customerPhone}
+              id='phone'
+              name='phone'
+              value={customer.phone}
               onChange={handleCustomerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
@@ -121,9 +121,9 @@ export default function Footer({ invoiceData, setInvoiceData }) {
             <input
               placeholder='Adress'
               autoComplete='off'
-              id='customerAdress'
-              name='customerAdress'
-              value={customer.customerAdress}
+              id='adress'
+              name='adress'
+              value={customer.adress}
               onChange={handleCustomerChange}
               className='w-72 mx-1 rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'

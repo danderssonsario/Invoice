@@ -11,17 +11,7 @@ function OrderDetails({ invoiceData, setInvoiceData }) {
       order: { ...prevState.order, [e.target.name]: e.target.value }
     }))
   }
-
-  useEffect(() => {
-    if(items.length) {
-      const sub = items.map((item) => item.priceTotal).reduce((prev, curr) => prev + curr)
-    setInvoiceData((prevState) => ({
-      ...prevState,
-      order: { ...prevState.order, subTotal: sub }
-    }))
-  }
-  }, [items])
-
+  
   return (
     <>
       <div className='mt-10 mb-14 flex items-end justify-start'>

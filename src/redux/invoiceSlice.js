@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import invoiceService from '../services/invoice-service.js'
 
 const initialState = {
+  draft: null,
   invoices: [],
   isError: false,
   isSuccess: false,
@@ -11,7 +12,8 @@ const initialState = {
 
 export const getInvoice = createAsyncThunk('invoice/getOne', async (params, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user.token
+    const token = thunkAPI.getState().auth.user.access_token
+    
     return await invoiceService.getInvoice(params, token)
   } catch (err) {
     return thunkAPI.rejectWithValue(err.message)
@@ -20,7 +22,7 @@ export const getInvoice = createAsyncThunk('invoice/getOne', async (params, thun
 
 export const getInvoices = createAsyncThunk('invoice/getAll', async (thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user.token
+    const token = thunkAPI.getState().auth.user.access_token
     return await invoiceService.getInvoices(token)
   } catch (err) {
     return thunkAPI.rejectWithValue(err.message)
@@ -29,7 +31,8 @@ export const getInvoices = createAsyncThunk('invoice/getAll', async (thunkAPI) =
 
 export const createInvoice = createAsyncThunk('invoice/create', async (invoiceData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user.token
+    const token = thunkAPI.getState().auth.user.access_token
+    console.log(token)
     return await invoiceService.createInvoice(invoiceData, token)
   } catch (err) {
     return thunkAPI.rejectWithValue(err.message)
@@ -38,7 +41,7 @@ export const createInvoice = createAsyncThunk('invoice/create', async (invoiceDa
 
 export const editInvoice = createAsyncThunk('invoice/edit', async (id, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user.token
+    const token = thunkAPI.getState().auth.user.access_token
     return await invoiceService.deleteGoal(id, token)
   } catch (err) {
     return thunkAPI.rejectWithValue(err.message)
@@ -55,16 +58,17 @@ export const deleteInvoice = createAsyncThunk('invoice/delete', async (id, thunk
 })
 
 export const invoiceSlice = createSlice({
-  name:'invoice',
+  name: 'invoice',
   initialState,
   reducers: {
     resetState: (state) => {
+      state.draft = null
       state.invoices = []
       state.isError = false
       state.isLoading = false
       state.isSuccess = false
       state.message = ''
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -101,6 +105,7 @@ export const invoiceSlice = createSlice({
         state.isLoading = false
         state.isSuccess = true
         state.invoices = state.invoices.push(action.payload)
+        state.draft = action.payload
       })
       .addCase(createInvoice.rejected, (state, action) => {
         state.isLoading = false
@@ -113,7 +118,9 @@ export const invoiceSlice = createSlice({
       .addCase(editInvoice.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.invoices = state.invoices.map((invoice) => (invoice.id === action.payload.id ? action.payload : invoice))
+        state.invoices = state.invoices.map((invoice) =>
+          invoice.id === action.payload.id ? action.payload : invoice
+        )
       })
       .addCase(editInvoice.rejected, (state, action) => {
         state.isLoading = false
