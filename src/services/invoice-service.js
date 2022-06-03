@@ -1,7 +1,7 @@
 const API_BASE_URL = 'https://faktureringsserver.herokuapp.com/api/v1' // heroku auth-app
 
-const getInvoice = async (params, token) => {
-  const res = await fetch(`${API_BASE_URL}/invoice/${params.id}`, {
+const getInvoice = async (id, token) => {
+  const res = await fetch(`${API_BASE_URL}/invoice/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -15,8 +15,8 @@ const getInvoice = async (params, token) => {
   return await res.json()
 }
 
-const getInvoices = async (token) => {
-  const res = await fetch(`${API_BASE_URL}/invoice`, {
+const getInvoices = async (page, limit, token) => {
+  const res = await fetch(`${API_BASE_URL}/invoice/?page=${page}&limit=${limit}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -45,8 +45,8 @@ const createInvoice = async (invoiceData, token) => {
   return await res.json()
 }
 
-const editInvoice = async (invoiceData, params, token) => {
-  const res = await fetch(`${API_BASE_URL}/invoice/${params.id}`, {
+const editInvoice = async (id, invoiceData, token) => {
+  const res = await fetch(`${API_BASE_URL}/invoice/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',

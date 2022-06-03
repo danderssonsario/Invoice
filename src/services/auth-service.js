@@ -58,7 +58,7 @@ const newPass = async (userData, params) => {
     body: JSON.stringify(userData),
   })
 
-  if (res.status === 400) throw new Error('Återställningslänk har gått ut eller förbrukats.')
+  if (res.status === 400) throw new Error('Återställningslänk har gått ut.')
 
   return await res.json()
 }

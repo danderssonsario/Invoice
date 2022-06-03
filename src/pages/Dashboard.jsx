@@ -1,7 +1,10 @@
 import Sidebar from '../components/Sidebar'
 import BarChart from '../components/BarChart'
+import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
-import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { getInvoices, resetState } from '../redux/invoiceSlice.js'
 import PieChart from '../components/PieChart'
 import { MdMoneyOff, MdAttachMoney, MdOutlinePendingActions } from 'react-icons/md'
 import {
@@ -13,6 +16,39 @@ import {
 } from 'react-icons/ai'
 
 function Dashboard() {
+
+  const [invoiceData, setInvoiceData] = useState([])
+
+   const navigate = useNavigate()
+   const dispatch = useDispatch()
+   const { user } = useSelector((state) => state.auth)
+   const { invoices, isSuccess, isError, isLoading, message } = useSelector((state) => state.invoice)
+
+  const [isPreview, setIsPreview] = useState(false)
+
+  useEffect(() => {
+    dispatch(getInvoices())
+  })
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login')
+    }
+
+    if (invoices) {
+      setInvoiceData(invoices)
+    }
+
+    if (isError) {
+      toast.error(message)
+    }
+
+    if (isSuccess) {
+      toast.success(message)
+    }
+
+    dispatch(resetState())
+  }, [user, invoices, isError, isSuccess, message, navigate, dispatch])
 
   const options = {
     scales: {

@@ -23,16 +23,15 @@ function NewPass() {
   }
 
   const params = useParams()
-  
+
   const onSubmit = (e) => {
     e.preventDefault()
 
-    const userData = {
-      password,
-      passwordConfirm
+    if (password !== passwordConfirm) {
+      toast.error('Lösenord matchar inte.')
+    } else {
+      dispatch(newPass(password, params))
     }
-
-    dispatch(newPass(userData, params))
   }
 
   const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
@@ -99,7 +98,9 @@ function NewPass() {
           <button
             type='submit'
             className='font-semibold text-gray-200 w-full my-5 py-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:bg-indigo-600'
-          ></button>
+          >
+            Sätt nytt lösenord
+          </button>
         )}
         <div className='flex justify-between'>
           <div className='font-semibold text-center text-gray-300 rounded-md w-2/5 my-3 py-0.5 bg-indigo-700 shadow-lg hover:bg-indigo-800 order-first'>

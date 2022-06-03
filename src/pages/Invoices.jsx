@@ -1,8 +1,38 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import Sidebar from '../components/Sidebar'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
+import { toast } from 'react-toastify'
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { getInvoices, resetState } from '../redux/invoiceSlice.js'
 
 function Invoices() {
+  toast.clearWaitingQueue()
+  const { user } = useSelector((state) => state.auth)
+  const { invoices, isError, isSuccess, isLoading, message } = useSelector((state) => state.invoice)
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const [data, setData] = useState([])
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(10)
+
+  useEffect(() => {
+    dispatch(getInvoices({page, limit}))
+  }, [dispatch, limit, page])
+
+  useEffect(() => {
+    
+    if (!user) navigate('/login')
+    if (isError) {toast.error(message)}
+    if (isSuccess) toast.success(message)
+    if (invoices.length) setData([...invoices])
+
+    /* dispatch(resetState()) */
+  }, [user, isError, isSuccess, message, navigate, dispatch, invoices])
+
   return (
     <div className='relative h-screen w-screen bg-gray-800 flex justify-center '>
       <Sidebar />
@@ -39,52 +69,55 @@ function Invoices() {
                     <th className='px-5 py-3 border-b-2 border-gray-300 bg-gray-700'></th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
-                      <p className='text-gray-900 whitespace-no-wrap'>#123456789</p>
-                    </td>
-                    <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
-                      <p className='text-gray-900 whitespace-no-wrap'>John Doe</p>
-                    </td>
-                    <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
-                      <p className='text-gray-900 whitespace-no-wrap'>10000kr</p>
-                    </td>
-                    <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
-                      <p className='text-gray-900 whitespace-no-wrap'>12 Maj 2022</p>
-                    </td>
-                    <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
-                      <p className='text-gray-900 whitespace-no-wrap'>30 Juni 2022</p>
-                    </td>
-                    <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl'>
-                      <span className='relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight'>
-                        <span
-                          aria-hidden
-                          className='absolute inset-0 bg-green-200 opacity-50 rounded-full'
-                        ></span>
-                        <span className='relative'>Betald</span>
-                      </span>
-                    </td>
-                    <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-sm text-right'>
-                      <button
-                        type='button'
-                        className='inline-block text-gray-500 hover:text-gray-700'
-                      >
-                        <svg className='inline-block h-6 w-6 fill-current' viewBox='0 0 24 24'>
-                          <path d='M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z' />
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
+                {data.map(({id, customer, order}, index) => (
+                  
+                  <tbody key={index}>
+                    <tr>
+                      <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
+                        <p className='text-gray-900 whitespace-no-wrap'>#123456789</p>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
+                        <p className='text-gray-900 whitespace-no-wrap'>{customer.name}</p>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
+                        <p className='text-gray-900 whitespace-no-wrap'>{order.total}</p>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
+                        <p className='text-gray-900 whitespace-no-wrap'>{order.date}</p>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
+                        <p className='text-gray-900 whitespace-no-wrap'>{order.dueDate}</p>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl'>
+                        <span className='relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight'>
+                          <span
+                            aria-hidden
+                            className='absolute inset-0 bg-green-200 opacity-50 rounded-full'
+                          ></span>
+                          <span className='relative'>{order.status}</span>
+                        </span>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-sm text-right'>
+                        <button
+                          type='button'
+                          className='inline-block text-gray-500 hover:text-gray-700'
+                          onClick={() => navigate(`/invoice/${id}`)}
+                        >
+                          <svg className='inline-block h-6 w-6 fill-current' viewBox='0 0 24 24'>
+                            <path d='M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z' />
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                ))}
               </table>
               <div className='bg-gray-200 px-4 py-3 flex items-center justify-between border-t border-gray-300 sm:px-6 font-semibold'>
                 <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
                   <div>
                     <p className='text-lg text-gray-700'>
-                      Visar <span className='font-bold'>1</span> till{' '}
-                      <span className='font-bold'>10</span> av{' '}
-                      <span className='font-bold'>97</span>{' '}
+                      Visar <span className='font-bold'>{page}</span> till{' '}
+                      <span className='font-bold'>10</span> av <span className='font-bold'>{invoices.length}</span>{' '}
                     </p>
                   </div>
                   <div>

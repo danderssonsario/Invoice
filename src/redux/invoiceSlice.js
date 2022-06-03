@@ -10,21 +10,21 @@ const initialState = {
   message: ''
 }
 
-export const getInvoice = createAsyncThunk('invoice/getOne', async (params, thunkAPI) => {
+export const getInvoice = createAsyncThunk('invoice/getOne', async (id, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.access_token
-    
-    return await invoiceService.getInvoice(params, token)
+    return await invoiceService.getInvoice(id, token)
   } catch (err) {
     return thunkAPI.rejectWithValue(err.message)
   }
 })
 
-export const getInvoices = createAsyncThunk('invoice/getAll', async (thunkAPI) => {
+export const getInvoices = createAsyncThunk('invoice/getAll', async ({page, limit}, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.access_token
-    return await invoiceService.getInvoices(token)
+    return await invoiceService.getInvoices(page, limit, token)
   } catch (err) {
+    console.log(err)
     return thunkAPI.rejectWithValue(err.message)
   }
 })
@@ -32,17 +32,16 @@ export const getInvoices = createAsyncThunk('invoice/getAll', async (thunkAPI) =
 export const createInvoice = createAsyncThunk('invoice/create', async (invoiceData, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.access_token
-    console.log(token)
     return await invoiceService.createInvoice(invoiceData, token)
   } catch (err) {
     return thunkAPI.rejectWithValue(err.message)
   }
 })
 
-export const editInvoice = createAsyncThunk('invoice/edit', async (id, thunkAPI) => {
+export const editInvoice = createAsyncThunk('invoice/edit', async ({id,  invoiceData}, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.access_token
-    return await invoiceService.deleteGoal(id, token)
+    return await invoiceService.editInvoice(id, invoiceData, token)
   } catch (err) {
     return thunkAPI.rejectWithValue(err.message)
   }
@@ -84,6 +83,7 @@ export const invoiceSlice = createSlice({
         state.isLoading = false
         state.isError = true
         state.message = action.payload
+        state.invoices = [{hej:''}]
       })
       .addCase(getInvoices.pending, (state) => {
         state.isLoading = true
@@ -92,11 +92,13 @@ export const invoiceSlice = createSlice({
         state.isLoading = false
         state.isSuccess = true
         state.invoices = action.payload
+        
       })
       .addCase(getInvoices.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
+        console.log(action)
       })
       .addCase(createInvoice.pending, (state) => {
         state.isLoading = true
@@ -104,7 +106,7 @@ export const invoiceSlice = createSlice({
       .addCase(createInvoice.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.invoices = state.invoices.push(action.payload)
+        state.invoices.push(action.payload)
         state.draft = action.payload
       })
       .addCase(createInvoice.rejected, (state, action) => {
@@ -116,11 +118,14 @@ export const invoiceSlice = createSlice({
         state.isLoading = true
       })
       .addCase(editInvoice.fulfilled, (state, action) => {
+        console.log(action.payload)
         state.isLoading = false
         state.isSuccess = true
         state.invoices = state.invoices.map((invoice) =>
           invoice.id === action.payload.id ? action.payload : invoice
         )
+        state.message = 'Faktura redigerad!'
+        state.draft = action.payload
       })
       .addCase(editInvoice.rejected, (state, action) => {
         state.isLoading = false

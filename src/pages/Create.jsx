@@ -14,9 +14,8 @@ import Items from '../components/createPage/Items.jsx'
 import Summary from '../components/createPage/Summary'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { createInvoice } from '../redux/invoiceSlice.js'
+import { createInvoice, resetState } from '../redux/invoiceSlice.js'
 import Spinner from '../components/Spinner'
-
 
 function Create() {
   toast.clearWaitingQueue()
@@ -41,22 +40,19 @@ function Create() {
 
   const [invoiceData, setInvoiceData] = useState(initState)
 
- const navigate = useNavigate()
-const dispatch = useDispatch()
-const { user } = useSelector((state) => state.auth)
-const { draft, isSuccess, isError, isLoading, message } = useSelector((state) => state.invoice)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
+  const { draft, isSuccess, isError, isLoading, message } = useSelector((state) => state.invoice)
 
-/* const onSubmit = (e) => {
+  /* const onSubmit = (e) => {
   e.preventDefault()
 
   dispatch(createInvoice(invoiceData))
 }   */
 
-
-
   const [isPreview, setIsPreview] = useState(false)
   useEffect(() => {
-    console.log(draft);
     if (!user) {
       navigate('/login')
     }
@@ -71,11 +67,10 @@ const { draft, isSuccess, isError, isLoading, message } = useSelector((state) =>
 
     if (isSuccess) {
       toast.success(message)
-      navigate(`/invoice/${draft.id}`)
     }
-  }, [user, draft, isError, isSuccess, message, navigate, dispatch])
-  
 
+    dispatch(resetState())
+  }, [user, draft, isError, isSuccess, message, navigate, dispatch])
 
   return (
     <div className='flex h-full w-full bg-gray-800'>
@@ -85,13 +80,6 @@ const { draft, isSuccess, isError, isLoading, message } = useSelector((state) =>
           Ny faktura
         </h2>
         <div className='flex flex-row mt-10 bg-gray-200 rounded-t py-2'>
-          {/* <button
-            onClick={() => dispatch(saveDraft(invoiceData))}
-            className='flex flex-row mx-auto my-auto mb-0 bg-lime-600 text-white font-bold py-2 px-8 text-lg rounded-xl shadow border-2 hover:bg-lime-800 transition-all duration-200'
-          >
-            Spara utkast
-            <VscOpenPreview className='ml-2 my-auto w-5 h-5' />
-          </button> */}
           <button
             onClick={() => setInvoiceData(initState)}
             className='flex flex-row mx-auto my-auto mb-0 bg-amber-600 text-white font-bold py-2 px-8 text-lg rounded-xl shadow border-2 hover:bg-amber-800 transition-all duration-200'
