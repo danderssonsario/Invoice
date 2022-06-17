@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 function OrderDetails({ invoiceData, setInvoiceData }) {
 
-  const { orderID, date, dueDate, reference } = invoiceData.order
+  const { orderID, date, duedate, reference } = invoiceData.order
   const { items } = invoiceData
 
   const handleOrderChange = (e) => {
@@ -44,10 +44,10 @@ function OrderDetails({ invoiceData, setInvoiceData }) {
             <input
               className='rounded-lg bg-gray-200 mt-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='date'
-              name='dueDate'
-              id='dueDate'
+              name='duedate'
+              id='duedate'
               autoComplete='off'
-              value={dueDate}
+              value={duedate}
               onChange={handleOrderChange}
             />
           </li>

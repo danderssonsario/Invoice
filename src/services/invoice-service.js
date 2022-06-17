@@ -56,12 +56,13 @@ const editInvoice = async (id, invoiceData, token) => {
   })
 
   if (res.status === 404) throw new Error('Faktura finns ej.')
+  if (res.status === 401) throw new Error('')
 
   return await res.json()
 }
 
-const deleteInvoice = async (params, token) => {
-  const res = await fetch(`${API_BASE_URL}/invoice/${params.id}`, {
+const deleteInvoice = async (id, token) => {
+  const res = await fetch(`${API_BASE_URL}/invoice/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -69,9 +70,10 @@ const deleteInvoice = async (params, token) => {
     }
   })
 
+  if (res.status === 401) throw new Error('')
   if (res.status === 404) throw new Error('Faktura finns ej.')
 
-  return await res.json()
+  return id
 }
 
 const invoiceService = {

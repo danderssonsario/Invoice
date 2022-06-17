@@ -24,7 +24,7 @@ function Sidebar() {
       <div
         className={` ${
           isOpen ? 'w-72' : 'w-20 '
-        } bg-gray-900 h-auto p-5 pt-8 duration-300`}
+        } bg-gray-900 h-auto p-5 pt-8 duration-300 relative inset-0`}
       >
         <div className='flex gap-x-4 items-center mb-10'>
           {isOpen ? (
@@ -86,7 +86,7 @@ function Sidebar() {
           </Link>
           <li onClick={onLogout}
             className='hover:text-gray-600 flex p-1 cursor-pointer text-gray-200 font-medium text-xl items-center gap-x-4 
-              mt-20'
+              absolute bottom-5'
           >
             <IoLogOut onClick={onLogout}
               className={`${

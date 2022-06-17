@@ -5,7 +5,7 @@ import Header from '../components/createPage/Header'
 import Notes from '../components/createPage/Notes'
 import { VscOpenPreview } from 'react-icons/vsc'
 import { AiOutlineClear } from 'react-icons/ai'
-import { MdOutlineCreate } from 'react-icons/md'
+import { MdOutlineCreate, MdOutlineCreateNewFolder } from 'react-icons/md'
 
 import Sidebar from '../components/Sidebar.jsx'
 import { toast } from 'react-toastify'
@@ -14,16 +14,18 @@ import Items from '../components/createPage/Items.jsx'
 import Summary from '../components/createPage/Summary'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { createInvoice, resetState } from '../redux/invoiceSlice.js'
+import { createInvoice, resetState, saveDraft } from '../redux/invoiceSlice.js'
 import Spinner from '../components/Spinner'
+import { reset } from '../redux/authSlice'
 
 function Create() {
   toast.clearWaitingQueue()
-
+  const { user } = useSelector((state) => state.auth)
   const initState = {
+    creator: user?.email,
     items: [{ desc: '', itemID: '', quant: '', pricePer: '', priceTotal: '' }],
     order: {
-      dueDate: '',
+      duedate: '',
       date: '',
       orderID: '',
       tax: 25,
@@ -42,23 +44,17 @@ function Create() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { user } = useSelector((state) => state.auth)
-  const { draft, isSuccess, isError, isLoading, message } = useSelector((state) => state.invoice)
 
-  /* const onSubmit = (e) => {
-  e.preventDefault()
+  const { draft, invoices, isSuccess, isError, isLoading, message } = useSelector((state) => state.invoice)
+  
+  const setDraft = () => {
+    toast.success('Utkast sparat.')
+    dispatch(saveDraft(invoiceData))
+  } 
 
-  dispatch(createInvoice(invoiceData))
-}   */
-
-  const [isPreview, setIsPreview] = useState(false)
   useEffect(() => {
     if (!user) {
       navigate('/login')
-    }
-
-    if (draft) {
-      navigate(`/invoice/${draft.id}`)
     }
 
     if (isError) {
@@ -67,19 +63,33 @@ function Create() {
 
     if (isSuccess) {
       toast.success(message)
+      navigate(`/invoice/${invoices[invoices.length - 1].id}`)
     }
 
-    dispatch(resetState())
-  }, [user, draft, isError, isSuccess, message, navigate, dispatch])
+    if (draft) setInvoiceData(draft)
 
+    dispatch(resetState)
+    
+  }, [user, isError, isSuccess, message, navigate, dispatch, invoices, draft])
+
+  if (isLoading)
+    return (
+      <div className='flex h-screen w-screen bg-gray-800'>
+        <Spinner
+          className={
+            'mx-auto my-auto w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300'
+          }
+        />
+      </div>
+    )
   return (
-    <div className='flex h-full w-full bg-gray-800'>
+    <div className='flex h-auto w-screen bg-gray-800'>
       <Sidebar />
-      <div className='flex flex-col mx-auto pb-20'>
+      <div className='container flex flex-col mx-auto pb-20'>
         <h2 className='text-7xl text-center font-semibold leading-tight text-gray-200'>
           Ny faktura
         </h2>
-        <div className='flex flex-row mt-10 bg-gray-200 rounded-t py-2'>
+        <div className='w-2/3 mx-auto flex flex-row mt-10 bg-gray-200 rounded-t py-2'>
           <button
             onClick={() => setInvoiceData(initState)}
             className='flex flex-row mx-auto my-auto mb-0 bg-amber-600 text-white font-bold py-2 px-8 text-lg rounded-xl shadow border-2 hover:bg-amber-800 transition-all duration-200'
@@ -88,15 +98,22 @@ function Create() {
             <AiOutlineClear className='ml-2 my-auto w-5 h-5' />
           </button>
           <button
+            onClick={() => setDraft()}
+            className='flex flex-row mx-auto my-auto mb-0 bg-lime-600 text-white font-bold py-2 px-8 text-lg rounded-xl shadow border-2 hover:bg-lime-800 transition-all duration-200'
+          >
+            Spara utkast
+            <MdOutlineCreateNewFolder className='ml-2 my-auto w-5 h-5' />
+          </button>
+          <button
             onClick={() => dispatch(createInvoice(invoiceData))}
             className='flex flex-row mx-auto my-auto mb-0 bg-lime-600 text-white font-bold py-2 px-8 text-lg rounded-xl shadow border-2 hover:bg-lime-800 transition-all duration-200'
           >
-            Skapa faktura
+            Skapa &amp; fortsätt
             <MdOutlineCreate className='ml-2 my-auto w-5 h-5' />
           </button>
         </div>
 
-        <div className='flex flex-col mx-auto bg-white p-5 rounded-b'>
+        <div className='w-2/3 flex flex-col mx-auto bg-white p-5 rounded-b'>
           <div className='p-5'>
             <Header invoiceData={invoiceData} setInvoiceData={setInvoiceData} />
             <OrderDetails invoiceData={invoiceData} setInvoiceData={setInvoiceData} />
