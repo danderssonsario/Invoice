@@ -15,12 +15,13 @@ import { MdOutlineCreate } from 'react-icons/md'
 import OrderDetails from '../components/createPage/OrderDetails'
 import Items from '../components/createPage/Items.jsx'
 import Summary from '../components/createPage/Summary'
-import { createPdf, send } from '../redux/pdfSlice.js'
+import { createPdf, getPdf, send } from '../redux/pdfSlice.js'
 
 function Invoice() {
   toast.clearWaitingQueue()
   const { user } = useSelector((state) => state.auth)
   const { invoice, isError, isSuccess, isLoading, message } = useSelector((state) => state.invoice)
+
 
   const [isEditing, setIsEditing] = useState(false)
 
@@ -55,7 +56,7 @@ function Invoice() {
     if(invoice) setInvoiceData(invoice)
   }, [invoice])
 
-  const sendInvoice = () => {
+  const handleSend = () => {
     dispatch(createPdf(invoiceData))
     dispatch(send())
   }
@@ -65,12 +66,20 @@ function Invoice() {
   navigate('/invoice') 
   }
 
+  const handleOpenPdf = () => {
+    dispatch(createPdf(invoiceData))
+    window.open(
+      `http://localhost:3000/pdf/${id}`,
+      '_blank',
+      'noopener,noreferrer'
+    )
+  }
+
   const togglePayStatus = () => {
     setInvoiceData((prevstate) => ({
       ...prevstate,
       order: {...prevstate.order, status: !prevstate.order.status} 
     }))
-     console.log(invoiceData.order.status)
   }
 
   useEffect(() => {
@@ -80,7 +89,7 @@ function Invoice() {
         dispatch(resetState())
       }
     }
-
+    
     if (isError) toast.error(message)
     if (isSuccess) toast.success(message)
     
@@ -112,7 +121,7 @@ function Invoice() {
             <>
               <div className='w-2/3 mx-auto flex flex-row mt-10 bg-gray-200 rounded-t py-2'>
                 <button
-                  onClick={() => handleDelete()}
+                  onClick={handleDelete}
                   className='flex flex-row mx-auto my-auto mb-0 bg-red-600 text-white font-bold py-2 px-8 text-lg rounded-xl shadow border-2 hover:bg-red-800 transition-all duration-200'
                 >
                   Radera
@@ -124,13 +133,13 @@ function Invoice() {
                   Redigera
                 </button>
                 <button
-                  onClick={setInvoiceData}
+                  onClick={handleOpenPdf}
                   className='flex flex-row mx-auto my-auto mb-0 bg-indigo-600 text-white font-bold py-2 px-8 text-lg rounded-xl shadow border-2 hover:bg-indigo-800 transition-all duration-200'
                 >
                   Öppna pdf
                 </button>
                 <button
-                  onClick={sendInvoice}
+                  onClick={handleSend}
                   className='flex flex-row mx-auto my-auto mb-0 bg-indigo-600 text-white font-bold py-2 px-8 text-lg rounded-xl shadow border-2 hover:bg-indigo-800 transition-all duration-200'
                 >
                   Maila till kund

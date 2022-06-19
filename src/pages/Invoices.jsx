@@ -56,12 +56,10 @@ function Invoices() {
   const indexOfLastPage = Math.ceil(total / limit)
 
   const handlePageChange = (e) => {
-    console.log(e.target.id);
     if(e.target.id === 'previous') setPage(page <= 1 ? 1 : (page - 1))
-
     if(e.target.id === 'next') setPage(page >= indexOfLastPage ? indexOfLastPage : (page + 1))
-    console.log(page);
   }
+  
   if (isLoading)
     return (
       <div className='flex h-screen w-screen bg-gray-800'>
@@ -113,20 +111,20 @@ function Invoices() {
                     <tr>
                       <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
                         <p className='text-gray-900 whitespace-no-wrap'>
-                          #{(index + 1).toString().padStart(6, '0')}
+                          {order.reference || '-'}
                         </p>
                       </td>
                       <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
-                        <p className='text-gray-900 whitespace-no-wrap'>{customer.name}</p>
+                        <p className='text-gray-900 whitespace-no-wrap'>{customer.name || '-'}</p>
                       </td>
                       <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
-                        <p className='text-gray-900 whitespace-no-wrap'>{order.total}</p>
+                        <p className='text-gray-900 whitespace-no-wrap'>{order.total || '-'}</p>
                       </td>
                       <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
-                        <p className='text-gray-900 whitespace-no-wrap'>{order.date}</p>
+                        <p className='text-gray-900 whitespace-no-wrap'>{order.date || '-'}</p>
                       </td>
                       <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl font-semibold'>
-                        <p className='text-gray-900 whitespace-no-wrap'>{order.dueDate}</p>
+                        <p className='text-gray-900 whitespace-no-wrap'>{order.dueDate || '-'}</p>
                       </td>
                       <td className='px-5 py-5 border-b border-gray-300 bg-gray-200 text-xl'>
                         {order.status ? (

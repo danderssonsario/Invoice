@@ -10,6 +10,7 @@ import NewPass from './pages/Newpass.jsx'
 import Invoices from './pages/Invoices.jsx'
 import Invoice from './pages/Invoice.jsx'
 import Create from './pages/Create.jsx'
+import PDFviewer from './pages/PDFviewer.jsx'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path='/create' element={<Create />}></Route>
             <Route exact path='/invoice' element={<Invoices />}></Route>
             <Route path='/invoice/:id' element={<Invoice />}></Route>
+            <Route path='/pdf/:id' element={<PDFviewer />}></Route>
             <Route path='/dashboard' element={<Dashboard />}></Route>
           </Routes>
         </>

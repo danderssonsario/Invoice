@@ -52,7 +52,7 @@ function OrderDetails({ invoiceData, setInvoiceData }) {
             />
           </li>
           <li className='px-2 bg-gray-100 rounded-b-md'>
-            <span className='font-bold'>Referens/OCR:</span>{' '}
+            <span className='font-bold'>Faktura-nr/OCR:</span>{' '}
             <input
               className='rounded-lg bg-gray-200 mt-2 mb-2 p-1 focus:bg-gray-100 focus:outline-1'
               type='text'
