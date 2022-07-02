@@ -5,6 +5,12 @@ import { toast } from 'react-toastify'
 import { reset, resetState } from '../redux/authSlice.js'
 import Spinner from '../components/Spinner.jsx'
 
+/**
+ * Component for requesting reset password link.
+ * 
+ * @version 1.0.0
+ * @author Daniel Andersson
+ */
 function Reset() {
   toast.clearWaitingQueue()
 
@@ -14,6 +20,11 @@ function Reset() {
 
   const { email } = formData
 
+  /**
+   * Onchange handler for input fields.
+   *
+   * @param {object} e - Event object.
+   */
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -26,6 +37,11 @@ function Reset() {
 
   const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
 
+  /**
+   * OnSubmit handler.
+   *
+   * @param {object} e - Event object.
+   */
   const onSubmit = (e) => {
     e.preventDefault()
 
@@ -36,15 +52,14 @@ function Reset() {
     dispatch(reset(userData))
   }
 
+  /**
+   * Hook for redux state.
+   */
   useEffect(() => {
-    if (user) {
-      navigate('/dashboard')
-    }
+    if (user) navigate('/dashboard')
 
-    if (isError) {
-      toast.error(message)
-    }
-    
+    if (isError) toast.error(message)
+
     if (isSuccess) {
       toast.success(message)
       navigate('/reset')
@@ -54,8 +69,9 @@ function Reset() {
   }, [user, isError, isSuccess, message, navigate, dispatch])
 
   return (
-    <div className='h-screen w-screen flex justify-center items-center bg-gray-800'>
-      <form onSubmit={onSubmit} className='max-w-[400px] w-full mx-auto bg-gray-900 p-8 rounded-lg'>
+    <div className='h-screen w-screen flex flex-col justify-center items-center bg-gray-800'>
+      <h2 className='text-7xl text-center font-semibold leading-tight text-gray-200'>Binvoice</h2>
+      <form onSubmit={onSubmit} className='my-auto max-w-[400px] w-full mx-auto bg-gray-900 p-8 rounded-lg'>
         <h2 className='text-4xl text-white font-bold text-center'>Återställ lösenord</h2>
         <div className='flex flex-col text-gray-200 py-2'>
           <label>Ange e-postadress kopplat till ditt konto.</label>

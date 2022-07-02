@@ -9,6 +9,7 @@ const initialState = {
   message: ''
 }
 
+/* Handlers for asynchronous requests. */
 export const getPdf = createAsyncThunk('pdf/get', async (yo,thunkAPI) => {
   try {
     console.log(yo)
@@ -39,6 +40,7 @@ export const send = createAsyncThunk('pdf/send', async (invoiceData, thunkAPI) =
   }
 })
 
+/* Redux slice. */
 export const pdfSlice = createSlice({
   name: 'pdf',
   initialState,

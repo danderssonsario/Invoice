@@ -5,6 +5,12 @@ import { toast } from 'react-toastify'
 import { newPass, resetState } from '../redux/authSlice.js'
 import Spinner from '../components/Spinner.jsx'
 
+/**
+ * Component for setting new password.
+ * 
+ * @version 1.0.0
+ * @author Daniel Andersson
+ */
 function NewPass() {
   toast.clearWaitingQueue()
 
@@ -15,6 +21,11 @@ function NewPass() {
 
   const { password, passwordConfirm } = formData
 
+  /**
+   * Onchange handler for input fields.
+   *
+   * @param {object} e - Event object.
+   */
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -24,6 +35,11 @@ function NewPass() {
 
   const params = useParams()
 
+  /**
+   * OnSubmit handler.
+   *
+   * @param {object} e - Event object.
+   */
   const onSubmit = (e) => {
     e.preventDefault()
 
@@ -39,16 +55,15 @@ function NewPass() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  /**
+   * Hook for redux state.
+   */
   useEffect(() => {
-    if (user) {
-      navigate('/dashboard')
-    }
-
-    if (isError) {
-      toast.error(message)
-    }
+    if (user) navigate('/dashboard')
+    if (isError) toast.error(message)
 
     if (isSuccess) {
+      toast.success(message)
       navigate('/login')
     }
 
@@ -56,8 +71,9 @@ function NewPass() {
   }, [user, isError, isSuccess, message, navigate, dispatch])
 
   return (
-    <div className='h-screen w-screen flex justify-center items-center bg-gray-800'>
-      <form onSubmit={onSubmit} className='max-w-[400px] w-full mx-auto bg-gray-900 p-8 rounded-lg'>
+    <div className='h-screen w-screen flex flex-col justify-center items-center bg-gray-800'>
+      <h2 className='text-7xl text-center font-semibold leading-tight text-gray-200'>Binvoice</h2>
+      <form onSubmit={onSubmit} className='my-auto max-w-[400px] w-full mx-auto bg-gray-900 p-8 rounded-lg'>
         <h2 className='text-4xl text-white font-bold text-center'>Välj ett nytt lösenord</h2>
         <div className='flex flex-col text-gray-400 py-2'>
           <label>Lösenord</label>

@@ -6,8 +6,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { logout, reset } from '../redux/authSlice.js'
 
-
+/**
+ * Sidebar menu.
+ * 
+ * @version 1.0.0
+ * @author Daniel Andersson
+ */
 function Sidebar() {
+
   const [isOpen, setIsOpen] = useState(false)
 
   const navigate = useNavigate()

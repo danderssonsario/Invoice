@@ -5,6 +5,12 @@ import { register, resetState } from '../redux/authSlice.js'
 import { toast } from 'react-toastify'
 import Spinner from '../components/Spinner.jsx'
 
+/**
+ * Component for registering an account.
+ * 
+ * @version 1.0.0
+ * @author Daniel Andersson
+ */
 function Register() {
   toast.clearWaitingQueue()
 
@@ -16,6 +22,11 @@ function Register() {
 
   const { email, password, passwordConfirm } = formData
 
+  /**
+   * Onchange handler for input fields.
+   *
+   * @param {object} e - Event object.
+   */
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -23,19 +34,23 @@ function Register() {
     }))
   }
 
+  /**
+   * OnSubmit handler.
+   *
+   * @param {object} e - Event object.
+   */
   const onSubmit = (e) => {
     e.preventDefault()
 
     if (password !== passwordConfirm) {
       toast.error('Lösenord matchar inte.')
     } else {
+      const userData = {
+        email,
+        password
+      }
 
-    const userData = {
-      email,
-      password
-    }
-
-    dispatch(register(userData))
+      dispatch(register(userData))
     }
   }
 
@@ -45,13 +60,9 @@ function Register() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (user) {
-      navigate('/dashboard')
-    }
+    if (user) navigate('/dashboard')
 
-    if (isError) {
-      toast.error(message)
-    }
+    if (isError) toast.error(message)
 
     if (isSuccess) {
       toast.success(message)
@@ -59,11 +70,12 @@ function Register() {
     }
 
     dispatch(resetState())
-  }, [user, isError, isSuccess, message, navigate, dispatch])
+  }, [user, isError, isSuccess, navigate, dispatch, message])
 
   return (
-    <div className='h-screen w-screen flex justify-center items-center bg-gray-800'>
-      <form onSubmit={onSubmit} className='max-w-[400px] w-full mx-auto bg-gray-900 p-8 rounded-lg'>
+    <div className='h-screen w-screen flex flex-col justify-center items-center bg-gray-800'>
+      <h2 className='text-7xl text-center font-semibold leading-tight text-gray-200'>Binvoice</h2>
+      <form onSubmit={onSubmit} className='my-auto max-w-[400px] w-full mx-auto bg-gray-900 p-8 rounded-lg'>
         <h2 className='text-4xl text-white font-bold text-center'>Registrera konto</h2>
         <div className='flex flex-col text-gray-400 py-2'>
           <label>E-postadress</label>

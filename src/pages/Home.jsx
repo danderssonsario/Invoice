@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom'
 
+/**
+ * Landing page.
+ * 
+ * @version 1.0.0
+ * @author Daniel Andersson
+ */
 function Home() {
   return (
     <div className='bg-gray-800 relative overflow-hidden h-screen'>

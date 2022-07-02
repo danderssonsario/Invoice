@@ -6,7 +6,6 @@ include:
 stages:
   - build
   - test
-  - review
   - production
 
 Build system:
@@ -17,7 +16,6 @@ Build system:
     - npm install
     - echo "Building..."
     - npm run build
-
   artifacts:
     paths:
       - build/
@@ -28,30 +26,7 @@ Code Linting:
   
   script:
     - echo "Code Linting...."
-
-Document Linting:
-  stage: test
-  
-  script:
-    - echo "Document Linting...."
-
-Unit tests:
-  stage: test
-  
-  script:
-    - echo "Running Unit tests..."
-
-Other automatic tests:
-  stage: test
-  
-  script:
-    - echo "Running Other Tests..."
-
-Deploy to testenv:
-  stage: review
-  
-  script:
-    - echo "Deploying to review server"
+    - npm run lint
 
 Deploy to production:
   stage: production

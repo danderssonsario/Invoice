@@ -1,6 +1,9 @@
+/**
+ * API Calls to Authentication server.
+ */
 const API_BASE_URL = 'https://autentiseringsserver.herokuapp.com' // heroku auth-app
-// const RESET_URL = 'https://stellular-chaja-fc1e9d.netlify.app/reset'
-const localurl = 'http://localhost:3000/reset'
+const RESET_URL = 'https://stellular-chaja-fc1e9d.netlify.app/reset'
+const localurl = 'http://localhost:5000'
 
 const register = async (userData) => {
   const res = await fetch(`${API_BASE_URL}/register`, {
@@ -11,10 +14,11 @@ const register = async (userData) => {
     body: JSON.stringify(userData)
   })
 
+  console.log(await res.json())
   if (res.status === 409) throw new Error('Användare existerar redan.')
   if (res.status === 400) throw new Error('Fält saknas.')
 
-  return 'hej'
+  return
 }
 
 const login = async (userData) => {
@@ -30,7 +34,7 @@ const login = async (userData) => {
   
   const data = await res.json()
 
-  localStorage.setItem('user', JSON.stringify(data))
+  localStorage.setItem('auth', JSON.stringify(data))
 
   return data
 }
@@ -41,7 +45,7 @@ const reset = async (userData) => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email: userData.email, resetUrl: localurl })
+    body: JSON.stringify({ email: userData.email, resetUrl: RESET_URL })
   })
 
   if (res.status === 404) throw new Error('Finns inget konto kopplat till denna e-postadress.')
@@ -64,7 +68,7 @@ const newPass = async (userData, params) => {
 }
 
 const logout = () => {
-  localStorage.removeItem('user')
+  localStorage.removeItem('auth')
 }
 
 const authService = {

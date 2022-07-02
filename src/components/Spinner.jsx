@@ -1,4 +1,10 @@
-function Spinner({className}) {
+/**
+ * Spinner.
+ *
+ * @version 1.0.0
+ * @author Daniel Andersson
+ */
+function Spinner({ className }) {
   return (
     <svg
       role='status'

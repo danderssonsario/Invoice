@@ -12,6 +12,7 @@ const initialState = {
   message: ''
 }
 
+/* Handlers for asynchronous requests. */
 export const getInvoice = createAsyncThunk('invoice/getOne', async (id, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.access_token
@@ -61,11 +62,14 @@ export const deleteInvoice = createAsyncThunk('invoice/delete', async (id, thunk
   }
 })
 
+/* Redux slice. */
 export const invoiceSlice = createSlice({
   name: 'invoice',
   initialState,
   reducers: {
-    resetState: (state) => initialState,
+    resetState: (state) => {
+      return {...initialState, draft: state.draft}
+    },
     togglePayStatus: (state, action) =>
       state.invoices.map((invoice) =>
         invoice.id === action.payload.id ? ({...invoice, order: {...invoice.order, status: !invoice.order.status}}) : invoice
@@ -122,6 +126,7 @@ export const invoiceSlice = createSlice({
         state.invoices.push(action.payload)
         state.isLoading = false
         state.message = 'Faktura skapad!'
+        state.draft = null
       })
       .addCase(createInvoice.rejected, (state, action) => {
         state.isLoading = false
