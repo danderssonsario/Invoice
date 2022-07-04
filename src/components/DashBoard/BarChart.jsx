@@ -24,8 +24,8 @@ function BarChart({ invoiceData }) {
   const [dateInterval, setDateInterval] = useState([])
   const [revenue, setRevenue] = useState([])
   const [inputDates, setInputDates] = useState({
-    start: '2022-01-01',
-    end: '2022-12-31'
+    start: new Date().toISOString().slice(0, 10), // Today yyyy-mm-dd
+    end: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString().slice(0, 10) // Today + 30 days.
   })
 
   const { start, end } = inputDates
@@ -60,8 +60,22 @@ function BarChart({ invoiceData }) {
       date.setDate(date.getDate() + 1)
     }
 
+
+    // Set revenue on index.
+    let revenueArray = []
+    for (let i = 0; i < filteredInvoices.length; i++) {
+      for (let x = 0; x < dates.length; x++) {
+        if(filteredInvoices[i].order?.date === dates[x]) {
+          revenueArray[x] = filteredInvoices[i].order?.total
+        } else {
+          revenueArray[x] = 0
+        }
+        
+      }
+    }
+
     setDateInterval(dates)
-    setRevenue(filteredInvoices.map((invoice) => invoice.order.total))
+    setRevenue(revenueArray)
   }, [start, end, invoiceData])
 
   // Chart settings

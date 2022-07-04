@@ -32,23 +32,30 @@ function Dashboard() {
     (state) => state.invoice
   )
 
-  // Get dashboard card values.
+  // Sort invoices.
   const paidInvoices = invoices.filter((invoice) => invoice.order.status)
   const unpaidInvoices = invoices.filter((invoice) => !invoice.order.status)
   const overdueInvoices = invoices.filter((invoice) => invoice.order.date > invoice.order.duedate)
-  const totalAmount = invoices.reduce((prev, curr) => (prev.order?.total || 0) + (curr.order?.total || 0), 0)
-  const paidAmount = paidInvoices.reduce(
-    (prev, curr) => (prev.order?.total || 0) + (curr.order?.total || 0),
-    0
-  )
-  const unpaidAmount = unpaidInvoices.reduce(
-    (prev, curr) => (prev.order?.total || 0) + (curr.order?.total || 0),
-    0
-  )
- const overdueAmount = overdueInvoices.reduce(
-   (prev, curr) => (prev.order?.total || 0) + (curr.order?.total || 0),
-   0
- )
+
+  // Get amount of sorted invoices.
+  let totalAmount = 0
+  invoices.forEach((invoice) => {
+    totalAmount += parseInt(invoice.order?.total)
+  })
+  let paidAmount = 0
+  paidInvoices.forEach((invoice) => {
+    paidAmount += parseInt(invoice.order?.total)
+  })
+  let unpaidAmount = 0
+  unpaidInvoices.forEach((invoice) => {
+    unpaidAmount += parseInt(invoice.order?.total)
+  })
+
+  let overdueAmount = 0
+  overdueInvoices.forEach((invoice) => {
+    overdueAmount += parseInt(invoice.order?.total)
+  })
+
 
  /**
   * Hook for redux state.

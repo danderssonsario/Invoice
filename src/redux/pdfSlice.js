@@ -12,7 +12,6 @@ const initialState = {
 /* Handlers for asynchronous requests. */
 export const getPdf = createAsyncThunk('pdf/get', async (yo,thunkAPI) => {
   try {
-    console.log(yo)
     const token = thunkAPI.getState().auth.user.access_token
     
     return await pdfService.getPdf(token)
@@ -22,11 +21,12 @@ export const getPdf = createAsyncThunk('pdf/get', async (yo,thunkAPI) => {
   }
 })
 
-export const createPdf = createAsyncThunk('pdf/create', async (thunkAPI) => {
+export const createPdf = createAsyncThunk('pdf/create', async (invoiceData, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.access_token
-    return await pdfService.createPdf(token)
+    return await pdfService.createPdf(invoiceData, token)
   } catch (err) {
+    console.log(err.message)
     return thunkAPI.rejectWithValue(err.message)
   }
 })
@@ -77,6 +77,7 @@ export const pdfSlice = createSlice({
       .addCase(createPdf.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
+        state.file = action.payload
       })
       .addCase(createPdf.rejected, (state, action) => {
         state.isLoading = false

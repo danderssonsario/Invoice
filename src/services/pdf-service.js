@@ -1,10 +1,11 @@
 /**
  * Api calls to resource server.
  */
+import customFetch from '../utils/customFetch'
 const API_BASE_URL = 'https://faktureringsserver.herokuapp.com/api/v1' // heroku auth-app
-
+const localurl = 'http://localhost:5001/api/v1'
 const getPdf = async (token) => {
-  const res = await fetch(`${API_BASE_URL}/pdf/`, {
+  const res = await customFetch(`${API_BASE_URL}/pdf`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -20,7 +21,8 @@ const getPdf = async (token) => {
 }
 
 const createPdf = async (data, token) => {
-  const res = await fetch(`${API_BASE_URL}/pdf/create`, {
+  console.log('createPDF')
+  const res = await customFetch(`${API_BASE_URL}/pdf/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -31,12 +33,12 @@ const createPdf = async (data, token) => {
 
   if (res.status === 404) throw new Error('Inga fakturor.')
   if (res.status === 401) throw new Error('')
+  return 
 
-  return await res.json()
 }
 
 const send = async (data, token) => {
-  const res = await fetch(`${API_BASE_URL}/pdf/send`, {
+  const res = await customFetch(`${API_BASE_URL}/pdf/send`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

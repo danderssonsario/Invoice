@@ -70,7 +70,6 @@ function Invoice() {
    * Sets invoice.
    */
   useEffect(() => {
-    console.log(invoice);
     if (invoice) setInvoiceData(invoice)
   }, [invoice])
 

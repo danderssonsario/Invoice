@@ -19,7 +19,7 @@ const originalRequest = async (url, config) => {
 }
 
 const refreshAccessToken = async (refreshToken) => {
-  const res = await fetch(`http://localhost:5000/refresh`, {
+  const res = await fetch(`${API_BASE_URL}/refresh`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

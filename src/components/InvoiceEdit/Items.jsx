@@ -32,6 +32,7 @@ function Items({ invoiceData, setInvoiceData }) {
     }))
   }
 
+
   /**
    * Onchange handler for items array of invoiceData.
    *
@@ -39,17 +40,19 @@ function Items({ invoiceData, setInvoiceData }) {
    * @param {object} e - Event object.
    */
   const handleItemChange = (index, e) => {
-    console.log(e.target.name);
-    console.log([...invoiceData.items][index][e.target.name])
-    
-    ;[...invoiceData.items][index][e.target.name] = e.target.value
-    
-    setInvoiceData({
-      ...invoiceData,
-      items: items.map((item) => {
-        return { ...item, priceTotal: (item.pricePer || 0) * (item.quant || 0) }
-      })
-    })
+
+    // Deep copy to prevent assigning to read only prop.
+    let newItems = JSON.parse(JSON.stringify(items))
+    newItems[index][e.target.name] = e.target.value 
+
+    setInvoiceData((prevState) => ({
+      ...prevState,
+      items: newItems.map((item) => ({
+        ...item,
+        priceTotal: item.pricePer * item.quant ?? 0
+      }))
+    }))
+
   }
 
   return (
@@ -63,7 +66,7 @@ function Items({ invoiceData, setInvoiceData }) {
       </div>
 
       {items.map((item, index) => (
-        <div key={index} className=''>
+        <div key={index} id={index} className=''>
           <div className='flex items-start w-full relative'>
             <div>
               <div className=''>
@@ -116,7 +119,9 @@ function Items({ invoiceData, setInvoiceData }) {
               </div>
             </div>
 
-            <p className='text-lg mt-2 p-1'>{item.priceTotal} kr</p>
+            <p className='text-lg mt-2 p-1'>
+              {item.priceTotal} kr
+            </p>
             <AiOutlineDelete
               onClick={() => deleteItemField(index)}
               className='absolute bottom-2 right-0 w-6 h-6 text-red-600 hover:text-red-800 hover:cursor-pointer duration-200'

@@ -50,6 +50,7 @@ function PDFviewer() {
     )}
 
   return (
+    
     <div className='h-screen w-screen flex justify-center items-center mx-auto text-center'>
       <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.14.305/build/pdf.worker.min.js'>
         <Viewer plugins={[defaultLayoutPluginInstance]} fileUrl={file} />;

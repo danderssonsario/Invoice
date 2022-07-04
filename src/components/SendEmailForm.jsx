@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import isEmail from 'validator/lib/isEmail'
-import { createPdf, send } from '../redux/pdfSlice.js'
+import { createPdf, send, resetState } from '../redux/pdfSlice.js'
 import { toast } from 'react-toastify'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 /**
@@ -14,14 +14,16 @@ import { useDispatch } from 'react-redux'
 function SendEmailForm({ invoiceData }) {
   const dispatch = useDispatch()
 
+  const { isSuccess } = useSelector((state) => state.pdf)
+
   // State
   const [mailFormData, setMailFormData] = useState({
-    to: '',
-    from: '',
-    body: ''
+    customer: '',
+    issuer: '',
+    message: ''
   })
 
-  const { to, from, body } = mailFormData
+  const { customer, issuer, message } = mailFormData
 
   /**
    * Handler for mail form input.
@@ -42,13 +44,28 @@ function SendEmailForm({ invoiceData }) {
    */
   const handleSend = (e) => {
     e.preventDefault()
-    if (!isEmail(to)) {
+    if (!isEmail(customer)) {
       toast.warning('Vänligen ange en e-postadress.')
     } else {
       dispatch(createPdf(invoiceData))
       dispatch(send(mailFormData))
     }
   }
+
+  useEffect(() => {
+  if (isSuccess) {
+    toast.success('Faktura skickad')
+    setMailFormData({
+      customer: '',
+      issuer: '',
+      message: ''
+    })
+  }
+
+    return () => {
+      dispatch(resetState())
+    }
+  },[dispatch, isSuccess])
 
   return (
     <form className='mt-5 w-2/3 mx-auto' onSubmit={handleSend}>
@@ -63,11 +80,11 @@ function SendEmailForm({ invoiceData }) {
                   required
                   onChange={handleMailFormChange}
                   type='text'
-                  name='from'
-                  id='from'
+                  name='issuer'
+                  id='issuer'
                   className='focus:ring-indigo-500 focus:border-indigo-500 p-1 flex-1 block w-full rounded-none rounded-r-md sm:text-base border-gray-300 bg-gray-100'
                   placeholder='Ex. Namn på verksamhet'
-                  value={from}
+                  value={issuer}
                 />
               </div>
             </div>
@@ -79,11 +96,11 @@ function SendEmailForm({ invoiceData }) {
                     required
                     onChange={handleMailFormChange}
                     type='text'
-                    name='to'
-                    id='to'
+                    name='customer'
+                    id='customer'
                     className='focus:ring-indigo-500 focus:border-indigo-500 p-1 flex-1 block w-full rounded-none rounded-r-md sm:text-base border-gray-300 bg-gray-100'
                     placeholder='E-postadress'
-                    value={to}
+                    value={customer}
                   />
                 </div>
               </div>
@@ -96,11 +113,11 @@ function SendEmailForm({ invoiceData }) {
               <div className='mt-1'>
                 <textarea
                   onChange={handleMailFormChange}
-                  id='body'
-                  name='body'
+                  id='message'
+                  name='message'
                   rows={3}
                   className='shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 p-1 block w-full sm:text-base border border-gray-300 rounded-md bg-gray-100'
-                  value={body}
+                  value={message}
                   placeholder='Valfritt'
                 />
               </div>
