@@ -1,3 +1,10 @@
+/**
+ * Sidebar menu component.
+ *
+ * @version 2.0.0
+ * @author Daniel Andersson
+ */
+
 import { useState } from 'react'
 import { AiOutlineMenuUnfold, AiOutlineMenuFold } from 'react-icons/ai'
 import { IoCreate, IoHome, IoLogOut } from 'react-icons/io5'
@@ -6,14 +13,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { logout, reset } from '../redux/authSlice.js'
 
-/**
- * Sidebar menu.
- * 
- * @version 1.0.0
- * @author Daniel Andersson
- */
 function Sidebar() {
-
   const [isOpen, setIsOpen] = useState(false)
 
   const navigate = useNavigate()
@@ -90,16 +90,20 @@ function Sidebar() {
               <span className={`${!isOpen && 'scale-0'} origin-left duration-200`}>Fakturor</span>
             </li>
           </Link>
-          <li onClick={onLogout}
+          <li
+            onClick={onLogout}
             className='hover:text-gray-600 flex p-1 cursor-pointer text-gray-200 font-medium text-xl items-center gap-x-4 
               absolute bottom-5'
           >
-            <IoLogOut onClick={onLogout}
+            <IoLogOut
+              onClick={onLogout}
               className={`${
                 !isOpen && 'hover:text-gray-600 duration-200'
               } ml-0.5 w-9 h-9 text-gray-200 shrink-0`}
             />
-            <span className={`${!isOpen && 'scale-0'} origin-left duration-200 shrink-0`}>Logga ut</span>
+            <span className={`${!isOpen && 'scale-0'} origin-left duration-200 shrink-0`}>
+              Logga ut
+            </span>
           </li>
         </ul>
       </div>

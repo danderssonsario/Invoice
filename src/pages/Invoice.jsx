@@ -1,3 +1,10 @@
+/**
+ * Component for single invoice.
+ *
+ * @version 2.0.0
+ * @author Daniel Andersson
+ */
+
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -21,12 +28,6 @@ import Footer from '../components/InvoiceEdit/Footer'
 import Spinner from '../components/Spinner'
 import Sidebar from '../components/Sidebar.jsx'
 
-/**
- * Component for single invoice.
- * 
- * @version 1.0.0
- * @author Daniel Andersson
- */
 function Invoice() {
   toast.clearWaitingQueue()
 
@@ -134,8 +135,7 @@ function Invoice() {
               Faktura
             </h2>
             <>
-
-            {/* Button Menu */}
+              {/* Button Menu */}
               <div className='w-2/3 mx-auto flex flex-wrap flex-row mt-10 bg-gray-200 rounded-t py-2'>
                 <button
                   onClick={handleDelete}
@@ -159,15 +159,14 @@ function Invoice() {
 
               <div className='w-2/3 flex flex-col mx-auto bg-white p-5 rounded-b'>
                 <div className='p-5'>
-                <InvoiceHeader issuer={issuer}/>
-                <InvoiceOrder order={order} />
-                <InvoiceItems items={items} />
-                <InvoiceSummary order={order} />
-                <InvoiceFooter issuer={issuer} customer={customer} payment={payment} />
+                  <InvoiceHeader issuer={issuer} />
+                  <InvoiceOrder order={order} />
+                  <InvoiceItems items={items} />
+                  <InvoiceSummary order={order} />
+                  <InvoiceFooter issuer={issuer} customer={customer} payment={payment} />
                 </div>
-              
               </div>
-              <SendEmailForm invoiceData={invoiceData}/>
+              <SendEmailForm invoiceData={invoiceData} />
             </>
           </div>
         ) : (

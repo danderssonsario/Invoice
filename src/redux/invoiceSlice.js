@@ -89,9 +89,6 @@ export const invoiceSlice = createSlice({
       .addCase(getInvoice.fulfilled, (state, action) => {
         state.invoice = action.payload
         state.isLoading = false
-        //state.isSuccess = true
-
-        //state.invoices = action.payload
       })
       .addCase(getInvoice.rejected, (state, action) => {
         state.isLoading = false
@@ -105,7 +102,6 @@ export const invoiceSlice = createSlice({
       })
       .addCase(getInvoices.fulfilled, (state, action) => {
         state.isLoading = false
-        //state.isSuccess = true
         state.invoices = action.payload.invoices
         state.total = action.payload.total
        

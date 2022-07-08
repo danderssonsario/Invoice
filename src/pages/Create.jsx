@@ -1,3 +1,10 @@
+/**
+ * Component for creating an invoice.
+ *
+ * @version 2.0.0
+ * @author Daniel Andersson
+ */
+
 import { useState, useEffect } from 'react'
 import { AiOutlineClear } from 'react-icons/ai'
 import { MdOutlineCreate, MdOutlineCreateNewFolder } from 'react-icons/md'
@@ -14,12 +21,6 @@ import Header from '../components/InvoiceEdit/Header'
 import Spinner from '../components/Spinner'
 import Sidebar from '../components/Sidebar.jsx'
 
-/**
- * Component for creating an invoice.
- *
- * @version 1.0.0
- * @author Daniel Andersson
- */
 function Create() {
   toast.clearWaitingQueue()
 
@@ -69,7 +70,7 @@ function Create() {
   }
 
   useEffect(() => {
-    if(draft) setInvoiceData(draft)
+    if (draft) setInvoiceData(draft)
   }, [draft, dispatch])
   /**
    * Hook for redux state.

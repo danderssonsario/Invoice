@@ -1,11 +1,12 @@
-import { Link } from 'react-router-dom'
-
 /**
  * Landing page.
- * 
- * @version 1.0.0
+ *
+ * @version 2.0.0
  * @author Daniel Andersson
  */
+
+import { Link } from 'react-router-dom'
+
 function Home() {
   return (
     <div className='bg-gray-800 relative overflow-hidden h-screen'>
@@ -18,7 +19,8 @@ function Home() {
                 <span className='block text-indigo-600 xl:inline'>fakturahantering</span>
               </h1>
               <p className='mt-3 text-base text-gray-200 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0'>
-                Faktureringsplattformen där du som småföretagare eller frilansare enkelt kan hantera dina fakturor. Helt digitalt!
+                Faktureringsplattformen där du som småföretagare eller frilansare enkelt kan hantera
+                dina fakturor. Helt digitalt!
               </p>
               <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start'>
                 <div className='rounded-md shadow'>

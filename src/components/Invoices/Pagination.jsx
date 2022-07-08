@@ -1,3 +1,10 @@
+/**
+ * Pagination for invoices list.
+ *
+ * @version 2.0.0
+ * @author Daniel Andersson
+ */
+
 import {
   AiOutlineLeft,
   AiOutlineRight,
@@ -5,19 +12,13 @@ import {
   AiOutlineDoubleRight
 } from 'react-icons/ai'
 
-/**
- * Pagination for invoices list.
- * 
- * @version 1.0.0
- * @author Daniel Andersson
- */
 function Pagination({ pageIndex, page, invoices, total, setPage }) {
   const limit = 10
   const indexOfLastPage = Math.ceil(total / limit)
 
   /**
    * Sets page based on element id.
-   * 
+   *
    * @param {object} e - Event object.
    */
   const handlePageChange = (e) => {

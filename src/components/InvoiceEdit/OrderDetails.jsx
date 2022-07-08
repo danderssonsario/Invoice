@@ -4,6 +4,7 @@
  * @version 2.0.0
  * @author Daniel Andersson
  */
+
 function OrderDetails({ invoiceData, setInvoiceData }) {
   const { orderID, date, duedate, reference } = invoiceData.order
 

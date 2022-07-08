@@ -4,6 +4,7 @@
  * @version 2.0.0
  * @author Daniel Andersson
  */
+
 function InvoiceFooter({ issuer, customer, payment }) {
   return (
     <footer className='flex footer border-t-2 border-gray-300 pt-5 justify-between'>

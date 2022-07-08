@@ -1,3 +1,10 @@
+/**
+ * Component for setting new password.
+ *
+ * @version 2.0.0
+ * @author Daniel Andersson
+ */
+
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -5,12 +12,6 @@ import { toast } from 'react-toastify'
 import { newPass, resetState } from '../redux/authSlice.js'
 import Spinner from '../components/Spinner.jsx'
 
-/**
- * Component for setting new password.
- * 
- * @version 1.0.0
- * @author Daniel Andersson
- */
 function NewPass() {
   toast.clearWaitingQueue()
 
@@ -73,7 +74,10 @@ function NewPass() {
   return (
     <div className='h-screen w-screen flex flex-col justify-center items-center bg-gray-800'>
       <h2 className='text-7xl text-center font-semibold leading-tight text-gray-200'>Binvoice</h2>
-      <form onSubmit={onSubmit} className='my-auto max-w-[400px] w-full mx-auto bg-gray-900 p-8 rounded-lg'>
+      <form
+        onSubmit={onSubmit}
+        className='my-auto max-w-[400px] w-full mx-auto bg-gray-900 p-8 rounded-lg'
+      >
         <h2 className='text-4xl text-white font-bold text-center'>Välj ett nytt lösenord</h2>
         <div className='flex flex-col text-gray-400 py-2'>
           <label>Lösenord</label>

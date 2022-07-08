@@ -4,6 +4,7 @@
  * @version 2.0.0
  * @author Daniel Andersson
  */
+
 export default function Footer({ invoiceData, setInvoiceData }) {
   const { issuer, customer, payment } = invoiceData
 

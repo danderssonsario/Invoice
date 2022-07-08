@@ -1,11 +1,13 @@
-import { useEffect } from "react"
 
 /**
  * Handles invoice's subtotal, tax, shipping and total in editor.
  * 
- * @version 1.0.0
+ * @version 2.0.0
  * @author Daniel Andersson
  */
+
+import { useEffect } from "react"
+
 function Summary({ invoiceData, setInvoiceData }) {
   const { order, items } = invoiceData
 

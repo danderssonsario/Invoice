@@ -1,14 +1,14 @@
+/**
+ * Table row for invoices list.
+ *
+ * @version 2.0.0
+ * @author Daniel Andersson
+ */
+
 import { useNavigate } from 'react-router-dom'
 import { AiOutlineEdit } from 'react-icons/ai'
 
-/**
- * Table row for invoices list..
- * 
- * @version 1.0.0
- * @author Daniel Andersson
- */
-function TableItem({ index, order, customer, id}) {
-
+function TableItem({ index, order, customer, id }) {
   const navigate = useNavigate()
 
   return (

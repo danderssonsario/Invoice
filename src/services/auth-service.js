@@ -1,9 +1,11 @@
 /**
  * API Calls to Authentication server.
+ *
+ * @author Daniel Andersson
+ * @version 2.0.0
  */
 const API_BASE_URL = 'https://autentiseringsserver.herokuapp.com' // heroku auth-app
 const RESET_URL = 'https://stellular-chaja-fc1e9d.netlify.app/reset'
-const localurl = 'http://localhost:5000'
 
 const register = async (userData) => {
   const res = await fetch(`${API_BASE_URL}/register`, {

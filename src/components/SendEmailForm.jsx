@@ -1,16 +1,16 @@
+/**
+ * Send email form component.
+ *
+ * @version 2.0.0
+ * @author Daniel Andersson
+ */
+
 import { useEffect, useState } from 'react'
 import isEmail from 'validator/lib/isEmail'
 import { createPdf, send, resetState } from '../redux/pdfSlice.js'
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 
-
-/**
- * Send email to clients.
- * 
- * @version 1.0.0
- * @author Daniel Andersson
- */
 function SendEmailForm({ invoiceData }) {
   const dispatch = useDispatch()
 
@@ -27,7 +27,7 @@ function SendEmailForm({ invoiceData }) {
 
   /**
    * Handler for mail form input.
-   * 
+   *
    * @param {object} e - Event object.
    */
   const handleMailFormChange = (e) => {
@@ -39,7 +39,7 @@ function SendEmailForm({ invoiceData }) {
 
   /**
    * Handler for sending mail.
-   * 
+   *
    * @param {object} e - Event object
    */
   const handleSend = (e) => {
@@ -53,19 +53,19 @@ function SendEmailForm({ invoiceData }) {
   }
 
   useEffect(() => {
-  if (isSuccess) {
-    toast.success('Faktura skickad')
-    setMailFormData({
-      customer: '',
-      issuer: '',
-      message: ''
-    })
-  }
+    if (isSuccess) {
+      toast.success('Faktura skickad')
+      setMailFormData({
+        customer: '',
+        issuer: '',
+        message: ''
+      })
+    }
 
     return () => {
       dispatch(resetState())
     }
-  },[dispatch, isSuccess])
+  }, [dispatch, isSuccess])
 
   return (
     <form className='mt-5 w-2/3 mx-auto' onSubmit={handleSend}>

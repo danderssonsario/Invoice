@@ -4,6 +4,7 @@
  * @version 2.0.0
  * @author Daniel Andersson
  */
+
 function DashboardCard({ label, value, Icon }) {
   return (
     <div className='my-5 mx-10 pl-5 w-80 h-32 bg-indigo-700 rounded-lg shadow-md'>

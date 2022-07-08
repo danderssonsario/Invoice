@@ -1,9 +1,10 @@
 /**
  * Displays invoice's orderID, date, duedate and payment reference.
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author Daniel Andersson
  */
+
 function InvoiceOrder({ order }) {
   return (
     <div className='text-lg mt-10 mb-14 flex items-end justify-start'>

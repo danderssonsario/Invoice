@@ -1,3 +1,10 @@
+/**
+ * Component for viewing pdf's.
+ *
+ * @version 2.0.0
+ * @author Daniel Andersson
+ */
+
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 
@@ -9,17 +16,10 @@ import { Worker, Viewer } from '@react-pdf-viewer/core'
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'
 import { useNavigate } from 'react-router-dom'
 
-
-/**
- * Component for viewing pdf's.
- * 
- * @version 1.0.0
- * @author Daniel Andersson
- */
 function PDFviewer() {
   const defaultLayoutPluginInstance = defaultLayoutPlugin()
 
-  const { file, isLoading, } = useSelector((state) => state.pdf)
+  const { file, isLoading } = useSelector((state) => state.pdf)
   const { user } = useSelector((state) => state.auth)
 
   const dispatch = useDispatch()
@@ -32,7 +32,7 @@ function PDFviewer() {
     if (!user) navigate('/login')
 
     dispatch(getPdf())
-    
+
     return () => {
       dispatch(resetState())
     }
@@ -47,10 +47,10 @@ function PDFviewer() {
           }
         />
       </div>
-    )}
+    )
+  }
 
   return (
-    
     <div className='h-screen w-screen flex justify-center items-center mx-auto text-center'>
       <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.14.305/build/pdf.worker.min.js'>
         <Viewer plugins={[defaultLayoutPluginInstance]} fileUrl={file} />;

@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import { Pie } from 'react-chartjs-2'
-
-ChartJS.register(ArcElement, Tooltip, Legend)
-
 /**
  * Handles dashboard's pie chart.
  *
  * @version 2.0.0
  * @author Daniel Andersson
  */
+
+import { useState, useEffect } from 'react'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Pie } from 'react-chartjs-2'
+
+ChartJS.register(ArcElement, Tooltip, Legend)
+
 function PieChart({ invoiceData }) {
-  
   // States
   const [paid, setPaid] = useState(0)
   const [unpaid, setUnpaid] = useState(0)

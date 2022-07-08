@@ -1,9 +1,10 @@
 /**
  * Displays invoice's subtotal, tax, shipping and total.
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author Daniel Andersson
  */
+
 function InvoiceSummary({ order }) {
   return (
     <div className='my-5 flex items-end justify-end'>

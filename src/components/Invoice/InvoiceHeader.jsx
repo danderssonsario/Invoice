@@ -1,9 +1,10 @@
 /**
  * Displays invoice's businessname and organisation number in header.
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author Daniel Andersson
  */
+
 function InvoiceHeader({ issuer }) {
   return (
     <header className='flex flex-col items-start justify-center mb-5 xl:flex-row xl:justify-between'>

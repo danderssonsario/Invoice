@@ -1,9 +1,18 @@
 /**
- * Api calls to resource server.
+ * Api calls to resource server, pdf route.
+ * 
+ * @author Daniel Andersson
+ * @version 2.0.0
  */
 import customFetch from '../utils/customFetch'
 const API_BASE_URL = 'https://faktureringsserver.herokuapp.com/api/v1' // heroku auth-app
-const localurl = 'http://localhost:5001/api/v1'
+
+/**
+ * Gets pdf from server.
+ * 
+ * @param {string} token - Auth token.
+ * @returns URL representation of the pdf Blob.
+ */
 const getPdf = async (token) => {
   const res = await customFetch(`${API_BASE_URL}/pdf`, {
     method: 'GET',
@@ -14,14 +23,19 @@ const getPdf = async (token) => {
   })
 
   if (res.status === 404) throw new Error('Faktura finns ej.')
-  if (res.status === 401) throw new Error('')
+  if (res.status === 401) localStorage.removeItem('auth')
 
   const pdfBlob = new Blob([await res.blob()], { type: 'application/pdf' })
   return URL.createObjectURL(pdfBlob)
 }
 
+/**
+ * Creates pdf on server.
+ * 
+ * @param {string} token - Auth token.
+ * @param {object} data - Invoice data.
+ */
 const createPdf = async (data, token) => {
-  console.log('createPDF')
   const res = await customFetch(`${API_BASE_URL}/pdf/create`, {
     method: 'POST',
     headers: {
@@ -32,11 +46,17 @@ const createPdf = async (data, token) => {
   })
 
   if (res.status === 404) throw new Error('Inga fakturor.')
-  if (res.status === 401) throw new Error('')
+  if (res.status === 401) localStorage.removeItem('auth')
   return 
 
 }
 
+/**
+ * Sends email to customer.
+ * 
+ * @param {string} token - Auth token.
+ * @param {object} data - Mail data { issuer, customer, message }
+ */
 const send = async (data, token) => {
   const res = await customFetch(`${API_BASE_URL}/pdf/send`, {
     method: 'POST',
@@ -47,7 +67,7 @@ const send = async (data, token) => {
     body: JSON.stringify(data)
   })
 
-  if (res.status === 401) throw new Error('')
+  if (res.status === 401) localStorage.removeItem('auth')
 
   return await res.json()
 }

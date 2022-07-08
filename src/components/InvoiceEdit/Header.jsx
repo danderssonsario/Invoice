@@ -4,6 +4,7 @@
  * @version 2.0.0
  * @author Daniel Andersson
  */
+
 function Header({ invoiceData, setInvoiceData }) {
   const { businessName, orgNr } = invoiceData.issuer
 

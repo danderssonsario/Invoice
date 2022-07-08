@@ -26,9 +26,13 @@ const refreshAccessToken = async (refreshToken) => {
     },
     body: JSON.stringify({ refreshToken: refreshToken})
   })
+  if(res.ok) {
   const data = await res.json()
   localStorage.setItem('auth', JSON.stringify(data))
   return data
+  } else {
+  localStorage.removeItem('auth')  
+  }
 }
 
 /**
@@ -37,7 +41,7 @@ const refreshAccessToken = async (refreshToken) => {
  * 
  * @param {string} url - Fetch URL.
  * @param {object} config - Config object.
- * @returns {object} { res, data } - Response of original request.
+ * @returns {object} Response of original request.
  */
 const customFetch = async (url, config = {}) => {
   let authTokens = localStorage.getItem('auth')

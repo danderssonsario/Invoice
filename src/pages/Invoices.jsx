@@ -1,3 +1,10 @@
+/**
+ * Component for listing invoices.
+ *
+ * @version 2.0.0
+ * @author Daniel Andersson
+ */
+
 import { toast } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
@@ -10,12 +17,6 @@ import Pagination from '../components/Invoices/Pagination.jsx'
 import TableItem from '../components/Invoices/TableItem.jsx'
 import TableHeader from '../components/Invoices/TableHeader.jsx'
 
-/**
- * Component for listing invoices.
- * 
- * @version 1.0.0
- * @author Daniel Andersson
- */
 function Invoices() {
   toast.clearWaitingQueue()
 
@@ -35,7 +36,7 @@ function Invoices() {
    * Page index used for calculating amount of invoices displayed.
    */
   useEffect(() => {
-    setPageIndex(page-1)
+    setPageIndex(page - 1)
   }, [page])
 
   /**
@@ -46,14 +47,13 @@ function Invoices() {
     if (isError) toast.error(message)
     if (isSuccess) toast.success(message)
 
-    dispatch(getInvoices({page, limit}))
+    dispatch(getInvoices({ page, limit }))
 
     return () => {
       dispatch(resetState())
     }
-
   }, [dispatch, isError, isSuccess, limit, message, navigate, page, user])
-  
+
   if (isLoading)
     return (
       <div className='flex h-screen w-screen bg-gray-800'>
@@ -83,7 +83,13 @@ function Invoices() {
                   <TableItem key={index} order={order} customer={customer} id={id} />
                 ))}
               </table>
-              <Pagination pageIndex={pageIndex} page={page} invoices={invoices.length} total={total} setPage={setPage} />
+              <Pagination
+                pageIndex={pageIndex}
+                page={page}
+                invoices={invoices.length}
+                total={total}
+                setPage={setPage}
+              />
             </div>
           </div>
         </div>

@@ -1,9 +1,10 @@
 /**
  * Displays invoice's items/services.
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author Daniel Andersson
  */
+
 function InvoiceItems({ items }) {
   return (
     <>

@@ -63,7 +63,6 @@ export const pdfSlice = createSlice({
         state.isLoading = false
         state.isSuccess = true
         state.file = action.payload
-        /* state.file = new Blob([action.payload], {type: 'application/pdf'}) */
       })
       .addCase(getPdf.rejected, (state) => {
         console.log('rejected')

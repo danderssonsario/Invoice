@@ -1,3 +1,10 @@
+/**
+ * Dashboard component.
+ *
+ * @version 2.0.0
+ * @author Daniel Andersson
+ */
+
 import Sidebar from '../components/Sidebar'
 import BarChart from '../components/DashBoard/BarChart'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,19 +19,11 @@ import {
   AiOutlineFileDone,
   AiOutlineFileUnknown,
   AiOutlineFileExclamation,
-  AiOutlineBank,
+  AiOutlineBank
 } from 'react-icons/ai'
 import DashboardCard from '../components/DashBoard/DashboardCard'
 
-
-/**
- * Dashboard component.
- * 
- * @version 1.0.0
- * @author Daniel Andersson
- */
 function Dashboard() {
-
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
@@ -56,19 +55,17 @@ function Dashboard() {
     overdueAmount += parseInt(invoice.order?.total)
   })
 
-
- /**
-  * Hook for redux state.
-  */
+  /**
+   * Hook for redux state.
+   */
   useEffect(() => {
     if (!user) navigate('/login')
-    
+
     dispatch(getInvoices({}))
 
     return () => {
       dispatch(resetState())
     }
-
   }, [user, isError, isSuccess, message, navigate, dispatch])
 
   if (isLoading)

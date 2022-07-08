@@ -1,3 +1,10 @@
+/**
+ * Handles dashboard's bar chart.
+ *
+ * @version 2.0.0
+ * @author Daniel Andersson
+ */
+
 import { useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2'
 import {
@@ -12,14 +19,7 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-/**
- * Handles dashboard's bar chart.
- *
- * @version 2.0.0
- * @author Daniel Andersson
- */
 function BarChart({ invoiceData }) {
-
   // States
   const [dateInterval, setDateInterval] = useState([])
   const [revenue, setRevenue] = useState([])
@@ -32,8 +32,8 @@ function BarChart({ invoiceData }) {
 
   /**
    * Date input onchange handler.
-   * 
-   * @param {object} e - Event object. 
+   *
+   * @param {object} e - Event object.
    */
   const handleDateChange = (e) => {
     setInputDates((prevState) => ({
@@ -60,17 +60,15 @@ function BarChart({ invoiceData }) {
       date.setDate(date.getDate() + 1)
     }
 
-
     // Set revenue on index.
     let revenueArray = []
     for (let i = 0; i < filteredInvoices.length; i++) {
       for (let x = 0; x < dates.length; x++) {
-        if(filteredInvoices[i].order?.date === dates[x]) {
+        if (filteredInvoices[i].order?.date === dates[x]) {
           revenueArray[x] = filteredInvoices[i].order?.total
         } else {
           revenueArray[x] = 0
         }
-        
       }
     }
 

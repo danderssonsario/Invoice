@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react'
-import { AiOutlineDelete } from 'react-icons/ai'
-
 /**
  * Handles invoice's items/services in editor.
- * 
+ *
  * @version 2.0.0
  * @author Daniel Andersson
  */
+
+import { AiOutlineDelete } from 'react-icons/ai'
+
 function Items({ invoiceData, setInvoiceData }) {
   const { items } = invoiceData
-  
+
   /**
    * Adds empty item object to items array.
    */
@@ -32,7 +32,6 @@ function Items({ invoiceData, setInvoiceData }) {
     }))
   }
 
-
   /**
    * Onchange handler for items array of invoiceData.
    *
@@ -40,10 +39,9 @@ function Items({ invoiceData, setInvoiceData }) {
    * @param {object} e - Event object.
    */
   const handleItemChange = (index, e) => {
-
     // Deep copy to prevent assigning to read only prop.
     let newItems = JSON.parse(JSON.stringify(items))
-    newItems[index][e.target.name] = e.target.value 
+    newItems[index][e.target.name] = e.target.value
 
     setInvoiceData((prevState) => ({
       ...prevState,
@@ -52,7 +50,6 @@ function Items({ invoiceData, setInvoiceData }) {
         priceTotal: item.pricePer * item.quant ?? 0
       }))
     }))
-
   }
 
   return (
@@ -119,9 +116,7 @@ function Items({ invoiceData, setInvoiceData }) {
               </div>
             </div>
 
-            <p className='text-lg mt-2 p-1'>
-              {item.priceTotal} kr
-            </p>
+            <p className='text-lg mt-2 p-1'>{item.priceTotal} kr</p>
             <AiOutlineDelete
               onClick={() => deleteItemField(index)}
               className='absolute bottom-2 right-0 w-6 h-6 text-red-600 hover:text-red-800 hover:cursor-pointer duration-200'
