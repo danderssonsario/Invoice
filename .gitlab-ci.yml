@@ -21,13 +21,6 @@ Build system:
       - build/
     expire_in: 30 days
 
-Code Linting:
-  stage: test
-  
-  script:
-    - echo "Code Linting...."
-    - npm run lint
-
 Deploy to production:
   stage: production
   
