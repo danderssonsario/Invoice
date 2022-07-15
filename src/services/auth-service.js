@@ -16,7 +16,6 @@ const register = async (userData) => {
     body: JSON.stringify(userData)
   })
 
-  console.log(await res.json())
   if (res.status === 409) throw new Error('Användare existerar redan.')
   if (res.status === 400) throw new Error('Fält saknas.')
 

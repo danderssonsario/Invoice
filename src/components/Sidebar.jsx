@@ -11,7 +11,7 @@ import { IoCreate, IoHome, IoLogOut } from 'react-icons/io5'
 import { FaFileInvoice } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { logout, reset } from '../redux/authSlice.js'
+import { logout, resetState } from '../redux/authSlice.js'
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -21,7 +21,7 @@ function Sidebar() {
 
   const onLogout = () => {
     dispatch(logout())
-    dispatch(reset())
+    dispatch(resetState())
     navigate('/')
   }
 

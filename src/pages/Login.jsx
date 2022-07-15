@@ -45,12 +45,7 @@ function Login() {
   const onSubmit = (e) => {
     e.preventDefault()
 
-    const userData = {
-      email,
-      password
-    }
-
-    dispatch(login(userData))
+    dispatch(login(formData))
   }
 
   const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)

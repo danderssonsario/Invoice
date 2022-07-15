@@ -87,7 +87,7 @@ function Invoice() {
    */
   const handleOpenPdf = () => {
     dispatch(createPdf(invoiceData))
-    window.open(`http://localhost:3000/pdf/${id}`, '_blank', 'noopener,noreferrer')
+    window.open(`https://stellular-chaja-fc1e9d.netlify.app/pdf/${id}`, '_blank', 'noopener,noreferrer')
   }
 
   /**
@@ -187,16 +187,16 @@ function Invoice() {
               {order.status ? (
                 <button
                   onClick={handleTogglePayStatus}
-                  className='flex flex-row mx-auto my-auto mb-0 bg-green-600 text-white font-bold py-2 px-9 text-lg rounded-xl shadow border-2 hover:bg-green-800 '
+                  className='flex flex-row mx-auto my-auto mb-0 bg-red-600 text-white font-bold py-2 px-8 text-lg rounded-xl shadow border-2 hover:bg-red-800'
                 >
-                  Markera som betald
+                  Markera som obetald
                 </button>
               ) : (
                 <button
                   onClick={handleTogglePayStatus}
-                  className='flex flex-row mx-auto my-auto mb-0 bg-red-600 text-white font-bold py-2 px-8 text-lg rounded-xl shadow border-2 hover:bg-red-800'
+                  className='flex flex-row mx-auto my-auto mb-0 bg-green-600 text-white font-bold py-2 px-9 text-lg rounded-xl shadow border-2 hover:bg-green-800 '
                 >
-                  Markera som obetald
+                  Markera som betald
                 </button>
               )}
               <button
