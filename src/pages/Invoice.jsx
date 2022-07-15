@@ -87,7 +87,7 @@ function Invoice() {
    */
   const handleOpenPdf = () => {
     dispatch(createPdf(invoiceData))
-    window.open(`https://stellular-chaja-fc1e9d.netlify.app/pdf/${id}`, '_blank', 'noopener,noreferrer')
+    window.open(`localhost:3000//pdf/${id}`, '_blank', 'noopener,noreferrer')
   }
 
   /**
